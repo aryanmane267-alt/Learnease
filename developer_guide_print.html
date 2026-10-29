@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LearnEase — Developer & Architecture Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.6;
+      color: #24243A;
+      background: #FFFFFF;
+      padding: 24px;
+    }
+
+    .doc-header-cover {
+      border-bottom: 3px solid #8B5CF6;
+      padding-bottom: 24px;
+      margin-bottom: 28px;
+    }
+
+    .doc-badge-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 8pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-purple { background: #EDE9FE; color: #6D28D9; }
+    .badge-green { background: #E2F9EE; color: #15803D; }
+
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 24pt;
+      font-weight: 800;
+      color: #1E1B4B;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 15pt;
+      font-weight: 700;
+      color: #4338CA;
+      border-bottom: 1.5px solid #E2E8F0;
+      padding-bottom: 6px;
+      margin-top: 24pt;
+      margin-bottom: 12pt;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 12.5pt;
+      font-weight: 700;
+      color: #1E1B4B;
+      margin-top: 16pt;
+      margin-bottom: 8pt;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    h4 {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #374151;
+      margin-top: 12pt;
+      margin-bottom: 6pt;
+      page-break-after: avoid;
+      break-after: avoid;
+    }
+
+    p {
+      margin-bottom: 10pt;
+      color: #374151;
+    }
+
+    blockquote {
+      background: #F8F7FF;
+      border-left: 4px solid #8B5CF6;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin: 14pt 0;
+      font-size: 10pt;
+      color: #4C1D95;
+    }
+    blockquote p {
+      margin-bottom: 4pt;
+      color: inherit;
+    }
+    blockquote p:last-child {
+      margin-bottom: 0;
+    }
+
+    ul, ol {
+      margin: 8pt 0 12pt 24pt;
+      color: #374151;
+    }
+
+    li {
+      margin-bottom: 4pt;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14pt 0;
+      font-size: 9.5pt;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    th, td {
+      border: 1px solid #E2E8F0;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    th {
+      background: #F1F5F9;
+      color: #1E293B;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) {
+      background: #F8FAFC;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 9pt;
+      background: #F1F5F9;
+      color: #BE185D;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #E2E8F0;
+    }
+
+    pre {
+      background: #0F172A;
+      color: #F8FAFC;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 12pt 0;
+      overflow-x: auto;
+      font-size: 8.5pt;
+      line-height: 1.5;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    pre code {
+      background: transparent;
+      color: #F8FAFC;
+      padding: 0;
+      border: none;
+      font-size: inherit;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #E2E8F0;
+      margin: 20pt 0;
+    }
+
+    a {
+      color: #6D28D9;
+      text-decoration: underline;
+    }
+
+    .doc-footer {
+      margin-top: 40pt;
+      border-top: 1px solid #E2E8F0;
+      padding-top: 12pt;
+      font-size: 8pt;
+      color: #94A3B8;
+      display: flex;
+      justify-content: space-between;
+      page-break-before: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="doc-header-cover">
+    <div class="doc-badge-row">
+      <span class="badge badge-purple">LearnEase EdTech Platform</span>
+      <span class="badge badge-green">Production Certified v1.0</span>
+    </div>
+    <div style="font-size: 9pt; color: #6B7280; margin-top: 8pt;">
+      Live Production: <a href="https://learnease-smoky.vercel.app">https://learnease-smoky.vercel.app</a> • Repository: <code>d:/Learnease</code>
+    </div>
+  </div>
+
+  <div class="doc-body">
+    <h1>LearnEase — Comprehensive Developer &amp; Code Architecture Guide</h1>
+<blockquote>
+<p><strong>Welcome to the LearnEase Codebase!</strong><br>This guide is written for developers, designers, and educators who want to understand exactly how LearnEase works under the hood, how the components interact, and how to customize, extend, or add new features yourself.</p>
+</blockquote>
+<hr>
+<h2>📑 Table of Contents</h2>
+<ol>
+<li><a href="#1-architecture-philosophy--project-structure">Architecture Philosophy &amp; Project Structure</a></li>
+<li><a href="#2-data-models--repositories-scriptjs">Data Models &amp; Repositories (<code>script.js</code>)</a></li>
+<li><a href="#3-audio-synthesizer--speech-engine-soundengine">Audio Synthesizer &amp; Speech Engine (<code>SoundEngine</code>)</a></li>
+<li><a href="#4-state-management--localstorage-statemanager">State Management &amp; LocalStorage (<code>StateManager</code>)</a></li>
+<li><a href="#5-spa-routing--view-controller-approuter">SPA Routing &amp; View Controller (<code>AppRouter</code>)</a></li>
+<li><a href="#6-journey-a-learn-to-read-engine-readingmanager">Journey A: Learn to Read Engine (<code>ReadingManager</code>)</a></li>
+<li><a href="#7-phonics-playground-games-engine-phonicsgamesmanager">Phonics Playground Games Engine (<code>PhonicsGamesManager</code>)</a></li>
+<li><a href="#8-journey-b-help-me-study-studio-studystudiomanager">Journey B: Help Me Study Studio (<code>StudyStudioManager</code>)</a></li>
+<li><a href="#9-flashcards-hub--3d-flip-system-flashcarddeckmanager">Flashcards Hub &amp; 3D Flip System (<code>FlashcardDeckManager</code>)</a></li>
+<li><a href="#10-accessibility-engine--reading-ruler">Accessibility Engine &amp; Reading Ruler</a></li>
+<li><a href="#11-design-system--css-styling-stylecss">Design System &amp; CSS Styling (<code>style.css</code>)</a></li>
+<li><a href="#12-step-by-step-recipes-how-to-make-changes-yourself">Step-by-Step Recipes: How to Make Changes Yourself</a></li>
+<li><a href="#13-deployment--production-commands">Deployment &amp; Production Commands</a></li>
+</ol>
+<hr>
+<h2>1. Architecture Philosophy &amp; Project Structure</h2>
+<p>LearnEase is intentionally engineered using <strong>100% Vanilla HTML5, CSS3, and JavaScript</strong> with <strong>zero external framework dependencies</strong>.</p>
+<h3>Why This Architecture?</h3>
+<ul>
+<li><strong>Zero Build Friction:</strong> No <code>npm run build</code>, Webpack, Babel, or Vite compilation required. Any code edit in an editor takes effect immediately upon browser refresh.</li>
+<li><strong>Extreme Speed &amp; Low Footprint:</strong> Total asset weight is under 350KB uncompressed, loading in milliseconds even on low-bandwidth school connections.</li>
+<li><strong>Maximum Portability:</strong> The code can be hosted on Vercel, Netlify, GitHub Pages, Amazon S3, an Apache/Nginx server, or opened directly off a USB drive via <code>file:///</code>.</li>
+<li><strong>Modularity:</strong> Despite being vanilla, JavaScript logic is organized into clean, single-responsibility object-oriented classes (<code>SoundEngine</code>, <code>StateManager</code>, <code>AppRouter</code>, <code>ReadingManager</code>, <code>PhonicsGamesManager</code>, <code>StudyStudioManager</code>, <code>FlashcardDeckManager</code>).</li>
+</ul>
+<h3>File Layout</h3>
+<pre><code>d:/Learnease/
+├── index.html           # Full Single-Page Application (SPA) HTML layout
+├── style.css            # Complete design system, themes, and animations (4,900+ lines)
+├── script.js            # All application logic, state, and audio (1,600+ lines)
+├── vercel.json          # Deployment and routing configuration for Vercel
+├── DEVELOPER_GUIDE.md   # This comprehensive architectural reference
+└── README.md            # Quick-start documentation &amp; live deployment links
+</code></pre>
+<hr>
+<h2>2. Data Models &amp; Repositories (<code>script.js</code>)</h2>
+<p>All learning content is stored in declarative JavaScript arrays and objects at the top of <code>script.js</code> (lines 7 to 240). This makes adding new educational material straightforward without modifying UI templates.</p>
+<h3>2.1 Alphabet Dataset (<code>ALPHABET_DATA</code>)</h3>
+<p>Each letter contains:</p>
+<pre><code class="language-javascript">{
+  letter: &#39;A&#39;,                                   // Uppercase letter
+  name: &#39;Ay&#39;,                                    // Letter name pronunciation text
+  sound: &#39;æ&#39;,                                    // Phonetic sound
+  phonetic: &#39;/æ/ as in Apple&#39;,                   // Badge description
+  word: &#39;Apple&#39;,                                 // Primary example word
+  emoji: &#39;🍎&#39;,                                   // Visual illustration icon
+  sentence: &#39;Apples are sweet and crunchy.&#39;,     // Contextual sentence
+  guide: &#39;Open mouth wide like taking a bite!&#39;   // Mouth shape guide for students
+}
+</code></pre>
+<h3>2.2 Phonics Patterns (<code>PHONICS_PATTERNS</code>)</h3>
+<p>Categorized by <code>short-vowels</code>, <code>consonants</code>, <code>digraphs</code>, or <code>vowel-teams</code>:</p>
+<pre><code class="language-javascript">{
+  cat: &#39;digraphs&#39;,
+  symbol: &#39;/ʃ/&#39;,
+  label: &#39;SH Digraph&#39;,
+  word: &#39;Ship&#39;,
+  emoji: &#39;🚢&#39;,
+  sample: &#39;ship, shell, shoe&#39;
+}
+</code></pre>
+<h3>2.3 Sound Blending Words (<code>BLEND_WORDS</code>)</h3>
+<p>Defines the CVC (Consonant-Vowel-Consonant) decomposition:</p>
+<pre><code class="language-javascript">cat: {
+  tiles: [
+    { char: &#39;c&#39;, sound: &#39;kuh&#39;, phoneme: &#39;/k/&#39; },
+    { char: &#39;a&#39;, sound: &#39;æ&#39;,   phoneme: &#39;/æ/&#39; },
+    { char: &#39;t&#39;, sound: &#39;tuh&#39;, phoneme: &#39;/t/&#39; }
+  ],
+  word: &#39;cat&#39;,
+  emoji: &#39;🐱&#39;
+}
+</code></pre>
+<h3>2.4 Multi-Syllable Words (<code>VOCAB_WORDS</code>)</h3>
+<pre><code class="language-javascript">{
+  word: &#39;Butterfly&#39;,
+  syllables: [&#39;but&#39;, &#39;ter&#39;, &#39;fly&#39;],              // Clickable syllable chips
+  emoji: &#39;🦋&#39;,
+  meaning: &#39;A colourful flying insect with large, delicate wings...&#39;,
+  sentence: &#39;A colourful butterfly rested gently on the sunny flower.&#39;
+}
+</code></pre>
+<h3>2.5 Sentence Building Puzzles (<code>SENTENCE_PUZZLES</code>)</h3>
+<pre><code class="language-javascript">{
+  target: [&#39;The&#39;, &#39;cute&#39;, &#39;cat&#39;, &#39;is&#39;, &#39;sleeping&#39;, &#39;peacefully.&#39;],
+  hint: &#39;The cute cat is sleeping peacefully.&#39;,
+  emoji: &#39;🐱💤&#39;,
+  scrambled: [&#39;cat&#39;, &#39;The&#39;, &#39;peacefully.&#39;, &#39;cute&#39;, &#39;sleeping&#39;, &#39;is&#39;]
+}
+</code></pre>
+<h3>2.6 Stories &amp; Reading Comprehension (<code>STORIES_DATA</code>)</h3>
+<p>Keyed by ID (<code>seed</code>, <code>dolphin</code>, <code>stars</code>):</p>
+<pre><code class="language-javascript">seed: {
+  title: &quot;The Little Seed&#39;s Journey 🌱&quot;,
+  paragraphs: [
+    &quot;Deep in the soft brown soil...&quot;,
+    &quot;Soon, the bright golden sun...&quot;
+  ],
+  questions: [
+    {
+      q: &quot;What helped the little seed wake up?&quot;,
+      options: [&quot;Cold snow&quot;, &quot;Spring rain and sun&quot;, &quot;Wind&quot;, &quot;A box&quot;],
+      correct: 1, // Index of correct option (0-indexed)
+      explanation: &quot;Spring raindrops and warm sunshine gave it water and warmth.&quot;
+    }
+  ]
+}
+</code></pre>
+<h3>2.7 Help Me Study Presets (<code>STUDY_PRESETS</code>)</h3>
+<p>Keyed by ID (<code>photosynthesis</code>, <code>watercycle</code>, <code>solarsystem</code>):</p>
+<ul>
+<li><code>raw</code>: The source educational paragraph.</li>
+<li><code>simplified</code>: Friendly plain-English HTML explanation.</li>
+<li><code>keyPoints</code>: Array of 4 takeaway bullets.</li>
+<li><code>branches</code>: 3 hierarchical concept tree nodes (<code>title</code> + <code>desc</code>).</li>
+<li><code>quiz</code>: 3 multiple-choice comprehension questions with explanations.</li>
+<li><code>flashcards</code>: Array of <code>{ term, meaning, example }</code> cards.</li>
+</ul>
+<hr>
+<h2>3. Audio Synthesizer &amp; Speech Engine (<code>SoundEngine</code>)</h2>
+<p>Found at <strong>Line 245 of <code>script.js</code></strong>. LearnEase uses a <strong>dual-layer audio architecture</strong>:</p>
+<pre><code class="language-mermaid">graph LR
+    A[&quot;Audio Action&quot;] --&gt; B{&quot;Type of Audio?&quot;}
+    B --&gt;|&quot;User Feedback Tone&quot;| C[&quot;Web Audio API (AudioContext)&quot;]
+    B --&gt;|&quot;Speech / Phonics / Words&quot;| D[&quot;Web Speech API (SpeechSynthesis)&quot;]
+    
+    C --&gt; C1[&quot;playChime() — Ascending C5-E5-G5 triad&quot;]
+    C --&gt; C2[&quot;playPop() — 440Hz-&gt;880Hz chip click&quot;]
+    C --&gt; C3[&quot;playGentleBonk() — Encouraging low tone&quot;]
+    
+    D --&gt; D1[&quot;speak(text, options) — Pitch/Rate/Voice&quot;]
+    D --&gt; D2[&quot;speakLetterSound(letter) — Phoneme isolation&quot;]
+    D --&gt; D3[&quot;speakLetterName(letter) — &#39;Letter Bee&#39;&quot;]
+    D --&gt; D4[&quot;speakWord(word, isSlow) — 0.72x or 0.95x&quot;]
+</code></pre>
+<h3>1. Zero-Asset Synthetic Sound Effects (Web Audio API)</h3>
+<p>LearnEase does not rely on external <code>.mp3</code> files that could fail to load or produce 404s:</p>
+<ul>
+<li><strong><code>playChime()</code></strong>: Synthesizes an arpeggio over frequencies <code>[523.25, 659.25, 783.99, 1046.50]</code> using sine waves and exponential gain ramps. Plays on correct answers and achievements.</li>
+<li><strong><code>playPop()</code></strong>: Generates an 80ms triangle wave sweep from 440Hz to 880Hz for tactile tile/button feedback.</li>
+<li><strong><code>playGentleBonk()</code></strong>: A soft 260Hz downward pitch drop (friendly, non-punishing feedback on incorrect choices).</li>
+</ul>
+<h3>2. Accurate Letter Sound vs. Letter Name Differentiation</h3>
+<p>English letters do not have the same sound as their names:</p>
+<ul>
+<li><strong><code>speakLetterName(&#39;A&#39;)</code></strong> triggers speech of <em>&quot;Letter Ay&quot;</em>.</li>
+<li><strong><code>speakLetterSound(&#39;A&#39;)</code></strong> references the phonetic table (e.g. <code>&#39;A&#39;</code> $\rightarrow$ <code>&#39;ah&#39;</code>, <code>&#39;B&#39;</code> $\rightarrow$ <code>&#39;buh&#39;</code>, <code>&#39;C&#39;</code> $\rightarrow$ <code>&#39;kuh&#39;</code>, <code>&#39;S&#39;</code> $\rightarrow$ <code>&#39;ssss&#39;</code>, <code>&#39;M&#39;</code> $\rightarrow$ <code>&#39;mmmm&#39;</code>).</li>
+</ul>
+<hr>
+<h2>4. State Management &amp; LocalStorage (<code>StateManager</code>)</h2>
+<p>Found at <strong>Line 460 of <code>script.js</code></strong>. The <code>state</code> singleton manages user sessions and persistence.</p>
+<h3>LocalStorage Keys</h3>
+<table>
+<thead>
+<tr>
+<th align="left">Storage Key</th>
+<th align="left">Format</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>learnease_user</code></td>
+<td align="left">JSON Object</td>
+<td align="left">User profile: <code>name</code>, <code>role</code>, <code>avatar</code>, <code>streak</code>, <code>lessonsCompleted</code>, <code>wordsPracticed</code>, <code>quizAverage</code>, <code>badges</code></td>
+</tr>
+<tr>
+<td align="left"><code>learnease_access</code></td>
+<td align="left">JSON Object</td>
+<td align="left">Accessibility settings: <code>theme</code>, <code>fontSize</code>, <code>lineSpacing</code>, <code>letterSpacing</code>, <code>fontFamily</code>, <code>rulerActive</code>, <code>reducedMotion</code>, <code>soundFx</code></td>
+</tr>
+<tr>
+<td align="left"><code>learnease_flashcards</code></td>
+<td align="left">JSON Object</td>
+<td align="left">Decks of flashcards including user-created cards in the <code>custom</code> deck</td>
+</tr>
+<tr>
+<td align="left"><code>learnease_activities</code></td>
+<td align="left">JSON Array</td>
+<td align="left">Activity history timeline items with timestamps and source tags</td>
+</tr>
+</tbody></table>
+<h3>Key Methods</h3>
+<ul>
+<li><code>state.saveUser()</code>: Saves profile changes and updates all UI avatars and metrics across headers, sidebars, and progress widgets.</li>
+<li><code>state.applyAccessibility()</code>: Applies data attributes (<code>data-theme</code>, <code>data-font-size</code>, <code>data-line-spacing</code>, <code>data-letter-spacing</code>, <code>data-reduced-motion</code>) directly to <code>&lt;html&gt;</code> and updates typography classes on <code>&lt;body&gt;</code>.</li>
+<li><code>state.logActivity(title, source, icon)</code>: Prepends a recent event to the activity stream (max 8 entries) and renders it on the dashboard.</li>
+</ul>
+<hr>
+<h2>5. SPA Routing &amp; View Controller (<code>AppRouter</code>)</h2>
+<p>Found at <strong>Line 580 of <code>script.js</code></strong>. Handles smooth, zero-reload transitions between views.</p>
+<pre><code class="language-mermaid">graph TD
+    UserAction[&quot;User Click&quot;] --&gt; R[&quot;AppRouter&quot;]
+    R --&gt;|&quot;View Switch&quot;| V[&quot;switchView(&#39;landing&#39; | &#39;app&#39;)&quot;]
+    R --&gt;|&quot;Sidebar Tab&quot;| T[&quot;switchTab(tabId)&quot;]
+    
+    V --&gt; V1[&quot;#landingView (Public Landing Page)&quot;]
+    V --&gt; V2[&quot;#appContainer (Workspace &amp; Sidebar)&quot;]
+    
+    T --&gt; T1[&quot;#tab-dashboard&quot;]
+    T --&gt; T2[&quot;#tab-learn-to-read&quot;]
+    T --&gt; T3[&quot;#tab-phonics-playground&quot;]
+    T --&gt; T4[&quot;#tab-help-me-study&quot;]
+    T --&gt; T5[&quot;#tab-flashcards&quot;]
+    T --&gt; T6[&quot;#tab-my-progress&quot;]
+    T --&gt; T7[&quot;#tab-parent-teacher&quot;]
+    T --&gt; T8[&quot;#tab-accessibility&quot;]
+</code></pre>
+<h3>Adding New Tabs</h3>
+<p>To add a new navigation tab:</p>
+<ol>
+<li>Add a <code>&lt;button class=&quot;sidebar-item&quot; data-app-tab=&quot;your-tab-id&quot;&gt;</code> in <code>#appSidebar</code>.</li>
+<li>Add a <code>&lt;section id=&quot;tab-your-tab-id&quot; class=&quot;tab-pane&quot;&gt;</code> inside <code>.app-main-content</code>.</li>
+<li>Add the title mapping in <code>AppRouter.switchTab()</code>:<pre><code class="language-javascript">&#39;your-tab-id&#39;: &#39;Your Section Title&#39;
+</code></pre>
+</li>
+</ol>
+<hr>
+<h2>6. Journey A: Learn to Read Engine (<code>ReadingManager</code>)</h2>
+<p>Found at <strong>Line 720 of <code>script.js</code></strong>. Controls the 7-level progression:</p>
+<ol>
+<li><strong>Level 1 (Alphabet):</strong><ul>
+<li>Populates <code>#alphabetGrid</code> dynamically from <code>ALPHABET_DATA</code>.</li>
+<li><code>selectLetter(idx)</code>: Updates <code>#spotlightBigLetter</code>, phonetics, emoji, sentence, mouth guide, and audio hooks.</li>
+</ul>
+</li>
+<li><strong>Level 2 (Phonics Playground):</strong><ul>
+<li><code>renderPhonicsCards(category)</code>: Filters <code>PHONICS_PATTERNS</code> by short vowels, consonants, digraphs, and vowel teams.</li>
+<li>Clicking a card updates the <em>Listen &amp; Repeat</em> challenge box.</li>
+</ul>
+</li>
+<li><strong>Level 3 (Sound Blending):</strong><ul>
+<li><code>renderBlenderWord(wordKey)</code>: Renders tile components for the active CVC word.</li>
+<li><code>animateBlendSequence()</code>: Calculates progressive timeouts, adds the <code>.blending-active</code> class, highlights the SVG beam, sounds out each phoneme individually, and concludes with <code>sound.playChime()</code> and <code>confetti.burst()</code>.</li>
+</ul>
+</li>
+<li><strong>Level 4 (Word Reading):</strong><ul>
+<li>Splits <code>VOCAB_WORDS.syllables</code> into separate clickable <code>.syllable-chip</code> elements.</li>
+<li>Speech Recognition: Uses <code>window.SpeechRecognition</code> or <code>window.webkitSpeechRecognition</code> to match the user&#39;s spoken audio with honest feedback.</li>
+</ul>
+</li>
+<li><strong>Level 5 (Sentence Building):</strong><ul>
+<li><code>placeWord(word, sourceTile)</code> / <code>checkSentence()</code>: Checks whether user-selected chips match <code>SENTENCE_PUZZLES.target</code>.</li>
+</ul>
+</li>
+<li><strong>Level 6 (Paragraph Reading):</strong><ul>
+<li>Wraps every word in <code>&lt;span class=&quot;story-word&quot;&gt;</code>.</li>
+<li><code>playStoryAudio()</code>: Computes word timings based on playback speed (<code>0.8x</code>, <code>1.0x</code>, <code>1.2x</code>) and animates the <code>.karaoke-active</code> highlighter.</li>
+<li>Clicking any word immediately pronounces that individual word.</li>
+</ul>
+</li>
+<li><strong>Level 7 (Comprehension):</strong><ul>
+<li>Multiple choice with instant feedback, explanation alerts, and XP awards.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>7. Phonics Playground Games Engine (<code>PhonicsGamesManager</code>)</h2>
+<p>Found at <strong>Line 1080 of <code>script.js</code></strong>. Manages 4 playable mini-games:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Game</th>
+<th align="left">Method</th>
+<th align="left">Mechanics</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>1. Sound Match</strong></td>
+<td align="left"><code>startGsmRound()</code></td>
+<td align="left">Selects 1 random target letter from <code>ALPHABET_DATA</code> and 3 random distractors. Plays the target phoneme. On click, checks match, adds points, updates streak, and triggers confetti.</td>
+</tr>
+<tr>
+<td align="left"><strong>2. Build the Word</strong></td>
+<td align="left"><code>renderGbwRound()</code></td>
+<td align="left">Displays illustration and target word length. Shuffles letters into <code>.build-tile-btn</code> chips. Clicking places letters sequentially into <code>#gbwSlot0..N</code>.</td>
+</tr>
+<tr>
+<td align="left"><strong>3. Match Word to Picture</strong></td>
+<td align="left"><code>renderGmpGame()</code></td>
+<td align="left">Creates two independent columns (words on left, emoji cards on right), each shuffled independently. Tracks selections and highlights matched pairs in green.</td>
+</tr>
+<tr>
+<td align="left"><strong>4. Missing Letter</strong></td>
+<td align="left"><code>renderGmlRound()</code></td>
+<td align="left">Presents a 3-letter word with the middle vowel replaced by <code>?</code>. Clicking the correct vowel button in <code>[A, E, I, O, U]</code> solves the case.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>8. Journey B: Help Me Study Studio (<code>StudyStudioManager</code>)</h2>
+<p>Found at <strong>Line 1310 of <code>script.js</code></strong>. Transforms educational text into 6 client-side study aids:</p>
+<pre><code class="language-mermaid">graph TD
+    Input[&quot;Input: Text / Preset / File (.txt, .md, .pdf)&quot;] --&gt; Process[&quot;processMaterial(data)&quot;]
+    
+    Process --&gt; T1[&quot;1. Easy Explanation (Conversational breakdown)&quot;]
+    Process --&gt; T2[&quot;2. Listen &amp; Learn (Audio player + speed slider)&quot;]
+    Process --&gt; T3[&quot;3. Key Takeaways (Numbered summary cards)&quot;]
+    Process --&gt; T4[&quot;4. Visual Concept Map (Mind-map node tree)&quot;]
+    Process --&gt; T5[&quot;5. Practice Quiz (Dynamic 3-question test)&quot;]
+    Process --&gt; T6[&quot;6. Generated Flashcards (With &#39;Save to Deck&#39; button)&quot;]
+</code></pre>
+<h3>File Extraction Flow</h3>
+<ul>
+<li>If user uploads <code>.txt</code> or <code>.md</code>: <code>FileReader.readAsText()</code> parses text directly.</li>
+<li>If user uploads PDF/Image: Provides clean fallback text extraction simulation and offers the option to paste raw text directly.</li>
+</ul>
+<hr>
+<h2>9. Flashcards Hub &amp; 3D Flip System (<code>FlashcardDeckManager</code>)</h2>
+<p>Found at <strong>Line 1500 of <code>script.js</code></strong>.</p>
+<h3>3D CSS Card Flip Implementation</h3>
+<p>In <code>style.css</code>:</p>
+<pre><code class="language-css">.flashcard-3d-scene {
+  perspective: 1000px;
+}
+.flashcard-card {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.flashcard-card.flipped {
+  transform: rotateY(180deg);
+}
+.flashcard-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flashcard-back {
+  transform: rotateY(180deg);
+}
+</code></pre>
+<ul>
+<li><strong>Flipping Trigger:</strong> Clicking anywhere on the card or pressing the <code>Spacebar</code> / <code>Enter</code> key toggles the <code>.flipped</code> class.</li>
+<li><strong>Audio Buttons:</strong> Front and back faces have <code>fc-audio-btn</code> elements that trigger <code>sound.speakWord(term)</code> or <code>sound.speak(meaning)</code>.</li>
+</ul>
+<hr>
+<h2>10. Accessibility Engine &amp; Reading Ruler</h2>
+<p>Found at <strong>Line 1600 of <code>script.js</code></strong>.</p>
+<h3>1. Reading Focus Ruler (<code>#readingRuler</code>)</h3>
+<p>A full-width translucent bar with subtle upper and lower contrast borders that follows the user&#39;s cursor or touch input:</p>
+<pre><code class="language-javascript">window.addEventListener(&#39;mousemove&#39;, (e) =&gt; {
+  if (ruler &amp;&amp; state.accessibility.rulerActive) {
+    ruler.style.top = `${e.clientY - 24}px`;
+  }
+});
+</code></pre>
+<h3>2. Theming Architecture</h3>
+<p>Themes are driven via the <code>data-theme</code> attribute on the root <code>&lt;html&gt;</code> element:</p>
+<ul>
+<li><code>data-theme=&quot;light&quot;</code>: Default soft lilac background <code>#F8F7FF</code> and white cards.</li>
+<li><code>data-theme=&quot;cream&quot;</code>: Sepia cream <code>#FAF6EE</code>, reduced glare, warm card tones <code>#FFFDF9</code>, text <code>#2B261F</code> (proven to reduce visual stress and reading fatigue in dyslexia).</li>
+<li><code>data-theme=&quot;dark&quot;</code>: <code>#131320</code> deep dark mode with neon accents.</li>
+</ul>
+<hr>
+<h2>11. Design System &amp; CSS Styling (<code>style.css</code>)</h2>
+<p>All color tokens, radii, and shadows are defined in <code>:root</code> at lines 7 to 48 of <code>style.css</code>:</p>
+<pre><code class="language-css">:root {
+  --pink: #FF79B0;
+  --purple: #8B5CF6;
+  --sky: #70D6FF;
+  --blue: #4F7DF3;
+  --green: #6ED6A5;
+  --yellow: #FFD166;
+  --bg: #F8F7FF;
+  --card-bg: #FFFFFF;
+  --text: #24243A;
+  --text-muted: #646482;
+  --border: #E8E5F5;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+}
+</code></pre>
+<h3>Responsive Breakpoints</h3>
+<ul>
+<li><strong>Desktop (1025px+):</strong> Fixed left sidebar (<code>270px</code>), multi-column grids, floating badges.</li>
+<li><strong>Tablet (769px–1024px):</strong> 2-column grids, compact heroes.</li>
+<li><strong>Mobile (&lt;=768px):</strong> Sidebar slides off-screen into a touch drawer toggled via the hamburger button (<code>☰</code>), single-column cards, and enlarged touch buttons (<code>min-height: 44px</code>).</li>
+</ul>
+<hr>
+<h2>12. Step-by-Step Recipes: How to Make Changes Yourself</h2>
+<h3>Recipe 1: How to Add a New Word to Sound Blending</h3>
+<ol>
+<li>Open <code>script.js</code>.</li>
+<li>Locate <code>BLEND_WORDS</code> (around line 60).</li>
+<li>Add your word object:<pre><code class="language-javascript">cup: {
+  tiles: [
+    { char: &#39;c&#39;, sound: &#39;kuh&#39;, phoneme: &#39;/k/&#39; },
+    { char: &#39;u&#39;, sound: &#39;uh&#39;,  phoneme: &#39;/ʌ/&#39; },
+    { char: &#39;p&#39;, sound: &#39;puh&#39;, phoneme: &#39;/p/&#39; }
+  ],
+  word: &#39;cup&#39;,
+  emoji: &#39;☕&#39;
+}
+</code></pre>
+</li>
+<li>Open <code>index.html</code>, locate <code>#blenderWordChips</code>, and add the chip button:<pre><code class="language-html">&lt;button class=&quot;blend-word-chip&quot; data-word=&quot;cup&quot;&gt;cup ☕&lt;/button&gt;
+</code></pre>
+</li>
+</ol>
+<hr>
+<h3>Recipe 2: How to Add a New Short Story &amp; Comprehension Quiz</h3>
+<ol>
+<li>Open <code>script.js</code>.</li>
+<li>Locate <code>STORIES_DATA</code> (around line 105).</li>
+<li>Add a new story key (e.g. <code>robot</code>):<pre><code class="language-javascript">robot: {
+  title: &quot;Beep the Friendly Robot 🤖&quot;,
+  paragraphs: [
+    &quot;Beep was a helpful little silver robot who lived in a bustling library.&quot;,
+    &quot;Whenever a student wanted a good book, Beep gently rolled across the floor and picked out exciting adventures.&quot;,
+    &quot;Reading books helped everyone in town learn new things every day!&quot;
+  ],
+  questions: [
+    {
+      q: &quot;Where did Beep the robot live?&quot;,
+      options: [&quot;In a space station&quot;, &quot;In a bustling library&quot;, &quot;Under the sea&quot;, &quot;In a treehouse&quot;],
+      correct: 1,
+      explanation: &quot;Beep lived in the library helping students discover great books!&quot;
+    }
+  ]
+}
+</code></pre>
+</li>
+<li>Open <code>index.html</code>, locate <code>&lt;select id=&quot;storySelect&quot;&gt;</code>, and add the option:<pre><code class="language-html">&lt;option value=&quot;robot&quot;&gt;Story 4: Beep the Friendly Robot 🤖&lt;/option&gt;
+</code></pre>
+</li>
+</ol>
+<hr>
+<h3>Recipe 3: How to Add a New Study Preset</h3>
+<ol>
+<li>Open <code>script.js</code>.</li>
+<li>Locate <code>STUDY_PRESETS</code> (around line 170).</li>
+<li>Add your preset (e.g. <code>volcanoes</code>):<pre><code class="language-javascript">volcanoes: {
+  title: &quot;Volcanoes: Mountains That Erupt&quot;,
+  raw: &quot;A volcano is an opening in the Earth&#39;s crust through which molten rock, hot gases, and ash erupt...&quot;,
+  simplified: &quot;&lt;p&gt;Think of a volcano like a giant pressure cooker inside the Earth! 🌋&lt;/p&gt;...&quot;,
+  keyPoints: [&quot;Magma is melted liquid rock beneath the ground.&quot;, &quot;Lava is magma after it erupts into the open air.&quot;],
+  branches: [
+    { title: &quot;Magma Chamber 🌋&quot;, desc: &quot;Pool of molten rock deep under the volcano&quot; },
+    { title: &quot;Vent ⬆️&quot;, desc: &quot;The pipe through which lava flows up&quot; },
+    { title: &quot;Crater 💥&quot;, desc: &quot;The bowl-shaped opening at the summit&quot; }
+  ],
+  quiz: [
+    { q: &quot;What is magma called after it erupts?&quot;, options: [&quot;Lava&quot;, &quot;Granite&quot;, &quot;Ice&quot;, &quot;Steam&quot;], correct: 0, exp: &quot;Once magma breaks the surface, it is called lava.&quot; }
+  ],
+  flashcards: [
+    { term: &quot;Lava&quot;, meaning: &quot;Molten rock that flows out of an erupting volcano.&quot;, example: &quot;Red hot lava cooled into dark rock.&quot; }
+  ]
+}
+</code></pre>
+</li>
+<li>In <code>index.html</code>, find <code>.preset-picker</code> and add:<pre><code class="language-html">&lt;button class=&quot;preset-pill&quot; data-preset=&quot;volcanoes&quot;&gt;Volcanoes 🌋&lt;/button&gt;
+</code></pre>
+</li>
+</ol>
+<hr>
+<h3>Recipe 4: How to Change the Brand Colors</h3>
+<ol>
+<li>Open <code>style.css</code>.</li>
+<li>Edit <code>:root</code> variables at the top:<pre><code class="language-css">:root {
+  --purple: #7C3AED;      /* Your new brand primary */
+  --pink: #EC4899;        /* Your new accent */
+  --bg: #F9FAFB;          /* Your new background */
+}
+</code></pre>
+</li>
+<li>Every button, badge, border, and gradient throughout the application will automatically update because they all inherit from these CSS variables.</li>
+</ol>
+<hr>
+<h2>13. Deployment &amp; Production Commands</h2>
+<h3>Running Locally</h3>
+<p>To test your changes locally, start any HTTP server in <code>d:/Learnease</code>:</p>
+<pre><code class="language-powershell"># Option A: Python 3
+python -m http.server 8080
+
+# Option B: Node.js / npx
+npx serve .
+</code></pre>
+<p>Then visit <code>http://localhost:8080/index.html</code>.</p>
+<h3>Deploying to Vercel</h3>
+<p>To publish updates live to Vercel:</p>
+<pre><code class="language-powershell">npx vercel --prod --yes
+</code></pre>
+<p>The live production URL will immediately reflect your latest commits.</p>
+<hr>
+<p><em>Documentation maintained for LearnEase EdTech Platform. Happy coding and teaching!</em></p>
+
+
+  </div>
+
+  <div class="doc-footer">
+    <span>LearnEase Educational Technology System • Confidential & Proprietary</span>
+    <span>Generated: October 21, 2026</span>
+  </div>
+</body>
+</html>

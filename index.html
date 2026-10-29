@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-font-size="medium" data-line-spacing="normal" data-letter-spacing="normal">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LearnEase — An interactive, accessible educational platform helping students develop reading skills, master phonics, and understand study material at their own pace.">
+  <meta name="theme-color" content="#8B5CF6">
+  <title>LearnEase — Interactive & Accessible Learning Platform</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@500;600;700;800&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="font-nunito">
+  <!-- Reading Ruler Overlay for Focus Mode -->
+  <div id="readingRuler" class="reading-ruler" aria-hidden="true"></div>
+
+  <!-- Confetti Canvas for Celebrations -->
+  <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- Notification Toast Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Top App Bar / Landing Navigation -->
+  <header id="mainHeader" class="main-header">
+    <div class="header-container">
+      <!-- Brand Logo -->
+      <a href="#landing" class="brand-logo" id="logoBtn" aria-label="LearnEase Home">
+        <div class="logo-icon-box">
+          <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="12" fill="url(#logoGrad)" />
+            <!-- Open Book Icon -->
+            <path d="M12 28.5C14.5 27 17.5 27 20 28.5V13C17.5 11.5 14.5 11.5 12 13V28.5Z" fill="white" />
+            <path d="M28 28.5C25.5 27 22.5 27 20 28.5V13C22.5 11.5 25.5 11.5 28 13V28.5Z" fill="white" fill-opacity="0.9" />
+            <!-- Sparkle -->
+            <path d="M20 7L21.2 9.8L24 11L21.2 12.2L20 15L18.8 12.2L16 11L18.8 9.8L20 7Z" fill="#FFD166" />
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#8B5CF6"/>
+                <stop offset="1" stop-color="#4F7DF3"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="logo-text-group">
+          <span class="logo-title">Learn<span class="logo-accent">Ease</span></span>
+          <span class="logo-tagline">Learn. Shine. Grow.</span>
+        </div>
+      </a>
+
+      <!-- Desktop Landing Navigation Links (Visible on Landing page) -->
+      <nav id="landingNav" class="landing-nav" aria-label="Main Navigation">
+        <button class="nav-link active" data-nav-target="landing">Home</button>
+        <button class="nav-link" data-nav-target="landing" data-scroll-to="learningJourneys">Journeys</button>
+        <button class="nav-link" data-nav-target="landing" data-scroll-to="howItWorks">How It Works</button>
+        <button class="nav-link" data-nav-target="landing" data-scroll-to="featuresSection">Features</button>
+        <button class="nav-link" data-nav-target="landing" data-scroll-to="parentsTeachersSection">Parents & Teachers</button>
+      </nav>
+
+      <!-- App Switcher & Quick Actions -->
+      <div class="header-actions">
+        <!-- Quick App View Switcher (Landing vs Dashboard) -->
+        <button id="viewToggleBtn" class="pill-btn pill-btn-soft" aria-label="Switch between Landing Page and App Dashboard">
+          <span class="btn-icon">✨</span>
+          <span class="btn-text" id="viewToggleText">App Dashboard</span>
+        </button>
+
+        <!-- Accessibility Quick Drawer Trigger -->
+        <button id="accessibilityBtn" class="icon-btn-pill" aria-label="Accessibility Settings" title="Accessibility & Display Settings">
+          <span class="access-icon">Aa</span>
+          <span class="access-badge-dot"></span>
+        </button>
+
+        <!-- Audio Sound Effects Toggle -->
+        <button id="soundFxToggleBtn" class="icon-btn-round" aria-label="Toggle Sound Effects" title="Toggle audio chime and speech sound effects">
+          <span id="soundFxIcon">🔊</span>
+        </button>
+
+        <!-- Notification Bell (Interactive Demo) -->
+        <div class="notification-wrapper">
+          <button id="notificationBtn" class="icon-btn-round" aria-label="Notifications" title="Recent Notifications">
+            <span>🔔</span>
+            <span class="notification-indicator"></span>
+          </button>
+          <div id="notificationDropdown" class="notification-dropdown hidden" role="menu">
+            <div class="notif-header">
+              <h4>Notifications</h4>
+              <button id="clearNotifsBtn" class="text-link-sm">Clear All</button>
+            </div>
+            <ul class="notif-list" id="notifList">
+              <li class="notif-item unread">
+                <span class="notif-badge bg-green">🎉</span>
+                <div class="notif-content">
+                  <p class="notif-text"><strong>Welcome to LearnEase!</strong> Explore Learn to Read and Phonics Playground.</p>
+                  <span class="notif-time">Just now</span>
+                </div>
+              </li>
+              <li class="notif-item">
+                <span class="notif-badge bg-yellow">🔥</span>
+                <div class="notif-content">
+                  <p class="notif-text"><strong>Daily Learning Streak Active!</strong> You're on a 5-day learning streak.</p>
+                  <span class="notif-time">Today</span>
+                </div>
+              </li>
+              <li class="notif-item">
+                <span class="notif-badge bg-purple">💡</span>
+                <div class="notif-content">
+                  <p class="notif-text"><strong>New Study Summary ready</strong> in Help Me Study workspace.</p>
+                  <span class="notif-time">Yesterday</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- User Profile Pill / Auth Button -->
+        <div class="user-profile-wrapper">
+          <button id="userProfileBtn" class="user-profile-btn" aria-haspopup="true" aria-expanded="false">
+            <span class="avatar-circle" id="navAvatar">🦉</span>
+            <span class="user-name-short" id="navUserName">Emma</span>
+            <svg class="chevron-down" width="12" height="12" viewBox="0 0 12 12"><path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div id="userProfileDropdown" class="profile-dropdown hidden" role="menu">
+            <div class="dropdown-user-info">
+              <div class="avatar-large" id="dropdownAvatar">🦉</div>
+              <div class="dropdown-user-details">
+                <h4 id="dropdownUserName">Emma Learner</h4>
+                <span class="badge-role" id="dropdownUserRole">Early Reader (Age 7)</span>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" data-action="go-progress">
+              <span>📊</span> My Progress & Badges
+            </button>
+            <button class="dropdown-item" data-action="go-parents">
+              <span>👨‍👩‍👧</span> Parent & Teacher View
+            </button>
+            <button class="dropdown-item" data-action="go-access">
+              <span>⚙️</span> Accessibility Controls
+            </button>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item text-danger" id="logoutBtn">
+              <span>🚪</span> Switch Learner / Sign Out
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobileMenuToggle" class="mobile-menu-btn" aria-label="Toggle Mobile Menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================== -->
+  <!-- 1. LANDING PAGE VIEW                                      -->
+  <!-- ========================================================== -->
+  <main id="landingView" class="view-section active">
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+      <div class="hero-bg-shapes" aria-hidden="true">
+        <div class="shape shape-circle-purple"></div>
+        <div class="shape shape-circle-pink"></div>
+        <div class="shape shape-circle-sky"></div>
+        <div class="shape shape-star star-1">✨</div>
+        <div class="shape shape-star star-2">⭐</div>
+        <div class="shape shape-letter letter-a">A</div>
+        <div class="shape shape-letter letter-b">b</div>
+        <div class="shape shape-letter letter-c">c</div>
+      </div>
+
+      <div class="hero-container">
+        <!-- Hero Text Column -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-sparkle">🌟</span>
+            <span>Supportive, Accessible EdTech for Every Student</span>
+          </div>
+          <h1 class="hero-title">
+            Every Learner Has Their Own Way to <span class="text-gradient">Shine.</span>
+          </h1>
+          <p class="hero-description">
+            Learn to read, discover new words, understand difficult concepts, and build confidence with learning experiences designed around you.
+          </p>
+
+          <div class="hero-cta-group">
+            <button class="btn btn-primary btn-large" id="heroStartLearningBtn">
+              <span>Start Learning Now</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.166 10h11.667M10 4.167L15.833 10 10 15.833" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="btn btn-secondary btn-large" id="heroExploreBtn">
+              <span class="btn-icon">🔍</span>
+              <span>Explore How It Works</span>
+            </button>
+          </div>
+
+          <!-- Trust & Accessibility Highlights -->
+          <div class="hero-highlights">
+            <div class="highlight-item">
+              <span class="highlight-icon">🎧</span>
+              <span>Web Speech Read-Aloud</span>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">🧩</span>
+              <span>Phonics & Blending Games</span>
+            </div>
+            <div class="highlight-item">
+              <span class="highlight-icon">👁️</span>
+              <span>Dyslexia-Friendly Tools</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Interactive Illustration -->
+        <div class="hero-visual">
+          <div class="hero-card-composition">
+            <!-- Central Mascot / Book Character Card -->
+            <div class="mascot-card floating-gentle">
+              <div class="mascot-avatar">
+                <svg viewBox="0 0 120 120" width="100" height="100" class="book-character-svg">
+                  <!-- Book Body -->
+                  <rect x="20" y="25" width="80" height="75" rx="14" fill="#8B5CF6" />
+                  <path d="M20 25C35 20 50 22 60 28C70 22 85 20 100 25V95C85 90 70 92 60 98C50 92 35 90 20 95V25Z" fill="#FFFFFF" />
+                  <line x1="60" y1="28" x2="60" y2="98" stroke="#E2E8F0" stroke-width="2" />
+                  <!-- Friendly Cute Face -->
+                  <ellipse cx="44" cy="55" rx="4.5" ry="6" fill="#24243A" />
+                  <ellipse cx="76" cy="55" rx="4.5" ry="6" fill="#24243A" />
+                  <circle cx="45" cy="53" r="1.5" fill="#FFFFFF" />
+                  <circle cx="77" cy="53" r="1.5" fill="#FFFFFF" />
+                  <!-- Glasses -->
+                  <circle cx="44" cy="55" r="11" stroke="#4F7DF3" stroke-width="2.5" fill="none" />
+                  <circle cx="76" cy="55" r="11" stroke="#4F7DF3" stroke-width="2.5" fill="none" />
+                  <line x1="55" y1="55" x2="65" y2="55" stroke="#4F7DF3" stroke-width="2.5" />
+                  <!-- Rosy Cheeks -->
+                  <circle cx="35" cy="65" r="5" fill="#FF79B0" fill-opacity="0.4" />
+                  <circle cx="85" cy="65" r="5" fill="#FF79B0" fill-opacity="0.4" />
+                  <!-- Smile -->
+                  <path d="M53 66C56 70 64 70 67 66" stroke="#24243A" stroke-width="2.5" stroke-linecap="round" />
+                  <!-- Sparkle Star on bookmark -->
+                  <path d="M60 14L62 18L66 19L62 21L60 25L58 21L54 19L58 18L60 14Z" fill="#FFD166" />
+                </svg>
+              </div>
+              <div class="mascot-speech-bubble">
+                <span class="speech-sparkle">✨</span>
+                <span>"Let's read and discover together!"</span>
+              </div>
+            </div>
+
+            <!-- Floating Interactive Card: Audio Lesson -->
+            <div class="floating-badge badge-audio-demo" id="heroAudioCard">
+              <button class="mini-play-btn" id="heroMiniPlayBtn" aria-label="Play sound demonstration">
+                <span class="play-icon">▶</span>
+              </button>
+              <div class="mini-audio-info">
+                <span class="mini-title">Sound of the Day: <strong>/æ/</strong></span>
+                <span class="mini-sub">"A" as in Apple 🍎</span>
+              </div>
+              <div class="audio-waves" aria-hidden="true">
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+              </div>
+            </div>
+
+            <!-- Floating Badge: Sound Blending Badge -->
+            <div class="floating-badge badge-blend-demo">
+              <span class="blend-chip">c</span>
+              <span class="blend-plus">+</span>
+              <span class="blend-chip">a</span>
+              <span class="blend-plus">+</span>
+              <span class="blend-chip">t</span>
+              <span class="blend-arrow">➔</span>
+              <span class="blend-result">cat 🐱</span>
+            </div>
+
+            <!-- Floating Badge: Study Summary Pill -->
+            <div class="floating-badge badge-study-summary">
+              <span class="study-icon">💡</span>
+              <div class="study-text">
+                <span class="study-label">Simplified Concept</span>
+                <span class="study-highlight">Photosynthesis = Plant Food Maker 🌿</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TWO LEARNING JOURNEYS SECTION -->
+    <section class="section-container" id="learningJourneys">
+      <div class="section-header text-center">
+        <span class="section-pill bg-purple-light text-purple">Choose Your Learning Path</span>
+        <h2 class="section-title">Two Equal, Supportive Journeys</h2>
+        <p class="section-subtitle">
+          Whether you are taking your first steps in reading or looking for smarter ways to study complex material, LearnEase gives you dedicated, specialized tools.
+        </p>
+      </div>
+
+      <div class="journeys-grid">
+        <!-- JOURNEY A: LEARN TO READ -->
+        <div class="journey-card journey-card-read">
+          <div class="card-badge bg-pink text-white">Journey A</div>
+          <div class="journey-header">
+            <div class="journey-icon-box bg-pink-light">
+              <span class="journey-icon">📖</span>
+            </div>
+            <div>
+              <h3 class="journey-title">Learn to Read</h3>
+              <span class="journey-target">For children & students building reading fundamentals</span>
+            </div>
+          </div>
+
+          <p class="journey-desc">
+            Start with letters and sounds, discover phonics, practise pronunciation, and become a confident, joyful reader step-by-step.
+          </p>
+
+          <!-- Progression Steps Visualization -->
+          <div class="progression-roadmap">
+            <span class="prog-step done">Letters</span>
+            <span class="prog-arrow">→</span>
+            <span class="prog-step done">Sounds</span>
+            <span class="prog-arrow">→</span>
+            <span class="prog-step current">Phonics</span>
+            <span class="prog-arrow">→</span>
+            <span class="prog-step">Blending</span>
+            <span class="prog-arrow">→</span>
+            <span class="prog-step">Sentences</span>
+            <span class="prog-arrow">→</span>
+            <span class="prog-step">Comprehension</span>
+          </div>
+
+          <div class="journey-features-list">
+            <div class="j-feature-item">
+              <span class="check-icon">✓</span>
+              <span><strong>A–Z Letter Recognition:</strong> Names vs Phonetic sounds</span>
+            </div>
+            <div class="j-feature-item">
+              <span class="check-icon">✓</span>
+              <span><strong>Phonics Playground:</strong> Digraphs, blends & sound patterns</span>
+            </div>
+            <div class="j-feature-item">
+              <span class="check-icon">✓</span>
+              <span><strong>Animated Sound Blending:</strong> Combine phonemes smoothly</span>
+            </div>
+            <div class="j-feature-item">
+              <span class="check-icon">✓</span>
+              <span><strong>Karaoke Read-Along:</strong> Click-to-hear word passages</span>
+            </div>
+          </div>
+
+          <div class="journey-card-footer">
+            <button class="btn btn-pink btn-block" id="startReadJourneyBtn">
+              <span>Begin Reading Journey</span>
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4.166 10h11.667M10 4.167L15.833 10 10 15.833" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- JOURNEY B: HELP ME STUDY -->
+        <div class="journey-card journey-card-study">
+          <div class="card-badge bg-blue text-white">Journey B</div>
+          <div class="journey-header">
+            <div class="journey-icon-box bg-blue-light">
+              <span class="journey-icon">💡</span>
+            </div>
+            <div>
+              <h3 class="journey-title">Help Me Study</h3>
+              <span class="journey-target">For students understanding existing study material</span>
+            </div>
+          </div>
+
+          <p class="journey-desc">
+            Turn difficult study material into easy explanations, audio lessons, visual summaries, quizzes, and revision cards.
+          </p>
+
+          <!-- Progression Steps Visualization -->
+          <div class="progression-roadmap">
+            <span class="prog-step done">Paste / Upload</span>
+            <span class="prog-arrow">→</span>
+            <span class="prog-step done">Simplify</span>
+            <span class="prog-arrow">→</span>
+            <span class="prog-step current">Listen</span>
+            <span class="prog-arrow">→</span>
+            <span class="prog-step">Visual Map</span>
+            <span class="prog-arrow">→</span>
+            <span class="prog-step">Quizzes</span>
+            <span class="prog-arrow">→</span>
+            <span class="prog-step">Flashcards</span>
+          </div>
+
+          <div class="journey-features-list">
+            <div class="j-feature-item">
+              <span class="check-icon">✓</span>
+              <span><strong>Upload or Paste:</strong> Process text, documents, or presets</span>
+            </div>
+            <div class="j-feature-item">
+              <span class="check-icon">✓</span>
+              <span><strong>Easy Explanations:</strong> Plain English breakdowns & analogies</span>
+            </div>
+            <div class="j-feature-item">
+              <span class="check-icon">✓</span>
+              <span><strong>Listen & Learn:</strong> Speed-controlled audio narration player</span>
+            </div>
+            <div class="j-feature-item">
+              <span class="check-icon">✓</span>
+              <span><strong>Automatic Quizzes & Flashcards:</strong> Test retention instantly</span>
+            </div>
+          </div>
+
+          <div class="journey-card-footer">
+            <button class="btn btn-blue btn-block" id="startStudyJourneyBtn">
+              <span>Start Studying Journey</span>
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4.166 10h11.667M10 4.167L15.833 10 10 15.833" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="section-container bg-soft" id="howItWorks">
+      <div class="section-header text-center">
+        <span class="section-pill bg-sky-light text-blue">The LearnEase Methodology</span>
+        <h2 class="section-title">How LearnEase Works</h2>
+        <p class="section-subtitle">
+          Designed with cognitive accessibility principles to minimize frustration, enhance confidence, and encourage joyful repetition.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number bg-purple text-white">1</div>
+          <div class="step-icon">🎯</div>
+          <h3 class="step-heading">Choose</h3>
+          <p class="step-body">Select your path — build foundational reading from letter sounds, or import your homework to simplify.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number bg-pink text-white">2</div>
+          <div class="step-icon">🧠</div>
+          <h3 class="step-heading">Learn</h3>
+          <p class="step-body">Interact with multimodal materials: visual letter cards, audio pronunciations, and plain-language summaries.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number bg-yellow text-text">3</div>
+          <div class="step-icon">🎮</div>
+          <h3 class="step-heading">Practise</h3>
+          <p class="step-body">Play phonics mini-games, blend sounds, flip flashcards, and solve low-stress comprehension challenges.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number bg-green text-white">4</div>
+          <div class="step-icon">🌱</div>
+          <h3 class="step-heading">Grow</h3>
+          <p class="step-body">Track streaks, earn badges, unlock new levels, and celebrate genuine personal progress with parents & teachers.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- KEY FEATURES GRID -->
+    <section class="section-container" id="featuresSection">
+      <div class="section-header text-center">
+        <span class="section-pill bg-green-light text-green">Built for Diverse Minds</span>
+        <h2 class="section-title">Key Features Designed for Success</h2>
+        <p class="section-subtitle">Every tool is crafted to remove barriers to reading, understanding, and independent learning.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="f-icon bg-pink-light">🔊</div>
+          <h3>Accurate Phonics Models</h3>
+          <p>Teaches letter sounds vs letter names clearly. Learn /m/ as in moon, /ʃ/ as in ship, and blend sounds with smooth visual audio highlights.</p>
+        </div>
+        <div class="feature-card">
+          <div class="f-icon bg-sky-light">🪟</div>
+          <h3>Reading Ruler & Focus Mode</h3>
+          <p>An interactive floating reading line guides the reader's eye, preventing visual crowding and line skipping.</p>
+        </div>
+        <div class="feature-card">
+          <div class="f-icon bg-purple-light">🎨</div>
+          <h3>Calm & High-Contrast Themes</h3>
+          <p>Switch seamlessly between cheerful light pastel, eye-friendly soft cream (sepia), and high-contrast dark mode.</p>
+        </div>
+        <div class="feature-card">
+          <div class="f-icon bg-yellow-light">🔤</div>
+          <h3>Dyslexia-Friendly Typography</h3>
+          <p>Adjust font size, line spacing, letter spacing, and toggle between friendly Nunito and specialized weighted font styling.</p>
+        </div>
+        <div class="feature-card">
+          <div class="f-icon bg-blue-light">🎧</div>
+          <h3>Interactive Audio Player</h3>
+          <p>Read-aloud with speed controls (0.75x to 1.5x), word-by-word karaoke highlighting, and click-to-pronounce on any unfamiliar word.</p>
+        </div>
+        <div class="feature-card">
+          <div class="f-icon bg-green-light">📊</div>
+          <h3>Encouraging Analytics</h3>
+          <p>Progress metrics celebrate effort, streaks, and practice time without punitive grading or stressful timers.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARENTS AND TEACHERS VALUE SECTION -->
+    <section class="section-container bg-soft" id="parentsTeachersSection">
+      <div class="section-header text-center">
+        <span class="section-pill bg-purple-light text-purple">Partners in Learning</span>
+        <h2 class="section-title">Value for Parents and Teachers</h2>
+        <p class="section-subtitle">
+          Transparent, supportive insight into learner practice without overwhelming jargon or medical diagnostic claims.
+        </p>
+      </div>
+
+      <div class="parents-grid">
+        <div class="parent-text-card">
+          <div class="pt-item">
+            <span class="pt-icon">🌱</span>
+            <div>
+              <h4>Non-Judgmental Learning Environment</h4>
+              <p>LearnEase encourages independent exploration where mistakes are simply opportunities to try again with audio hints.</p>
+            </div>
+          </div>
+          <div class="pt-item">
+            <span class="pt-icon">📈</span>
+            <div>
+              <h4>Clear Skill Progression Breakdown</h4>
+              <p>See exactly which phonics patterns, sight words, and study modules the student has practiced and mastered.</p>
+            </div>
+          </div>
+          <div class="pt-item">
+            <span class="pt-icon">🤝</span>
+            <div>
+              <h4>Actionable Practice Ideas</h4>
+              <p>Get fun offline activities and conversation prompts tailored to the student's current learning level.</p>
+            </div>
+          </div>
+          <div class="disclaimer-callout">
+            <span class="callout-icon">ℹ️</span>
+            <p><strong>Educational Notice:</strong> LearnEase is an educational support platform, not a medical or diagnostic tool. We celebrate every learner's individual growth!</p>
+          </div>
+        </div>
+
+        <div class="parent-preview-card">
+          <div class="preview-card-header">
+            <div class="preview-learner-pill">
+              <span class="learner-avatar">🦉</span>
+              <div>
+                <strong>Emma's Learning Snapshot</strong>
+                <span class="learner-sub">Grade 1 • Active Today</span>
+              </div>
+            </div>
+            <span class="status-pill-green">Active</span>
+          </div>
+
+          <div class="preview-metrics">
+            <div class="p-metric">
+              <span class="p-metric-val text-purple">7</span>
+              <span class="p-metric-lbl">Phonics Levels</span>
+            </div>
+            <div class="p-metric">
+              <span class="p-metric-val text-pink">42</span>
+              <span class="p-metric-lbl">Words Practiced</span>
+            </div>
+            <div class="p-metric">
+              <span class="p-metric-val text-green">5 Days</span>
+              <span class="p-metric-lbl">Streak 🔥</span>
+            </div>
+          </div>
+
+          <div class="preview-recommendation">
+            <span class="rec-icon">💡</span>
+            <p><strong>Suggested Activity:</strong> Emma is excelling at short vowel sounds! Try the <em>/sh/ and /ch/ Digraph Games</em> next.</p>
+          </div>
+
+          <button class="btn btn-secondary btn-block" id="previewParentViewBtn">
+            <span>Open Full Parent & Teacher Dashboard</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALL TO ACTION BANNER -->
+    <section class="cta-banner-section">
+      <div class="cta-banner-container">
+        <div class="cta-banner-content">
+          <h2>Ready to Build Reading Confidence & Smarter Study Habits?</h2>
+          <p>Join thousands of learners discovering that learning can be supportive, friendly, and fun.</p>
+          <div class="cta-buttons">
+            <button class="btn btn-primary btn-large" id="ctaStartBtn">
+              <span>Start Learning Free</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.166 10h11.667M10 4.167L15.833 10 10 15.833" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="btn btn-secondary btn-large" id="ctaDemoGuestBtn">
+              <span>Quick Demo Guest Access</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+      <div class="footer-container">
+        <div class="footer-col brand-col">
+          <div class="footer-logo">
+            <div class="logo-icon-box-sm">
+              <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
+                <rect width="40" height="40" rx="10" fill="#8B5CF6"/>
+                <path d="M12 28.5C14.5 27 17.5 27 20 28.5V13C17.5 11.5 14.5 11.5 12 13V28.5Z" fill="white" />
+                <path d="M28 28.5C25.5 27 22.5 27 20 28.5V13C22.5 11.5 25.5 11.5 28 13V28.5Z" fill="white" fill-opacity="0.9" />
+              </svg>
+            </div>
+            <span class="footer-brand-name">LearnEase</span>
+          </div>
+          <p class="footer-tagline">
+            An interactive, accessible learning platform designed to help every student learn at their own pace, practise without fear, and grow with confidence.
+          </p>
+          <div class="footer-badges">
+            <span class="badge-mini bg-purple-light text-purple">WCAG 2.1 AA Aligned</span>
+            <span class="badge-mini bg-green-light text-green">100% Client-Side Demo</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Learning Journeys</h4>
+          <ul class="footer-links">
+            <li><button class="footer-link-btn" data-action="go-read">Learn to Read</button></li>
+            <li><button class="footer-link-btn" data-action="go-phonics">Phonics Playground</button></li>
+            <li><button class="footer-link-btn" data-action="go-blending">Sound Blending</button></li>
+            <li><button class="footer-link-btn" data-action="go-study">Help Me Study</button></li>
+            <li><button class="footer-link-btn" data-action="go-flashcards">Flashcards Hub</button></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Accessibility & Support</h4>
+          <ul class="footer-links">
+            <li><button class="footer-link-btn" data-action="open-access">Display & Font Settings</button></li>
+            <li><button class="footer-link-btn" data-action="toggle-ruler">Reading Focus Ruler</button></li>
+            <li><button class="footer-link-btn" data-action="go-parents">Parent & Teacher Portal</button></li>
+            <li><button class="footer-link-btn" data-action="go-progress">Progress Tracker</button></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-heading">Educational Disclaimer</h4>
+          <p class="footer-disclaimer-text">
+            LearnEase is an educational support tool. It does not provide medical or learning disability diagnoses. All activities are designed for supportive educational enrichment.
+          </p>
+          <p class="footer-copy">© LearnEase EdTech Prototype. Crafted with vanilla HTML, CSS & JavaScript.</p>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ========================================================== -->
+  <!-- 2. APPLICATION DASHBOARD & INTERACTIVE WORKSPACE (SPA)    -->
+  <!-- ========================================================== -->
+  <div id="appContainer" class="app-layout hidden">
+    <!-- Collapsible Sidebar -->
+    <aside id="appSidebar" class="app-sidebar" aria-label="Application Navigation">
+      <div class="sidebar-brand">
+        <a href="#landing" class="sidebar-logo-link" id="sidebarLogoBtn">
+          <div class="logo-icon-box-sm">
+            <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
+              <rect width="40" height="40" rx="10" fill="#8B5CF6"/>
+              <path d="M12 28.5C14.5 27 17.5 27 20 28.5V13C17.5 11.5 14.5 11.5 12 13V28.5Z" fill="white" />
+              <path d="M28 28.5C25.5 27 22.5 27 20 28.5V13C22.5 11.5 25.5 11.5 28 13V28.5Z" fill="white" fill-opacity="0.9" />
+            </svg>
+          </div>
+          <span class="sidebar-brand-name">LearnEase</span>
+        </a>
+        <button id="sidebarCloseBtn" class="sidebar-close-btn" aria-label="Close Sidebar">✕</button>
+      </div>
+
+      <!-- Quick Back to Landing link -->
+      <div class="sidebar-back-box">
+        <button id="backToLandingBtn" class="back-landing-btn">
+          <span>←</span> Back to Public Landing
+        </button>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Sidebar Menu">
+        <div class="sidebar-group-title">MAIN WORKSPACE</div>
+        <button class="sidebar-item active" data-app-tab="dashboard">
+          <span class="sb-icon">🏠</span>
+          <span class="sb-label">Dashboard Hub</span>
+        </button>
+
+        <div class="sidebar-group-title">JOURNEY A: READING</div>
+        <button class="sidebar-item" data-app-tab="learn-to-read">
+          <span class="sb-icon">📖</span>
+          <span class="sb-label">Learn to Read</span>
+          <span class="sb-badge bg-pink text-white">Core</span>
+        </button>
+        <button class="sidebar-item" data-app-tab="phonics-playground">
+          <span class="sb-icon">🎮</span>
+          <span class="sb-label">Phonics Games</span>
+          <span class="sb-badge bg-yellow text-text">Play</span>
+        </button>
+
+        <div class="sidebar-group-title">JOURNEY B: STUDYING</div>
+        <button class="sidebar-item" data-app-tab="help-me-study">
+          <span class="sb-icon">💡</span>
+          <span class="sb-label">Help Me Study</span>
+          <span class="sb-badge bg-blue text-white">Tools</span>
+        </button>
+        <button class="sidebar-item" data-app-tab="flashcards">
+          <span class="sb-icon">🗂️</span>
+          <span class="sb-label">Flashcards Hub</span>
+        </button>
+
+        <div class="sidebar-group-title">INSIGHTS & SETTINGS</div>
+        <button class="sidebar-item" data-app-tab="my-progress">
+          <span class="sb-icon">📊</span>
+          <span class="sb-label">My Progress</span>
+        </button>
+        <button class="sidebar-item" data-app-tab="parent-teacher">
+          <span class="sb-icon">👨‍👩‍👧</span>
+          <span class="sb-label">Parent / Teacher</span>
+        </button>
+        <button class="sidebar-item" data-app-tab="accessibility">
+          <span class="sb-icon">⚙️</span>
+          <span class="sb-label">Accessibility</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Mini Profile -->
+      <div class="sidebar-profile-card">
+        <div class="sb-avatar" id="sbAvatar">🦉</div>
+        <div class="sb-info">
+          <strong id="sbUserName">Emma</strong>
+          <span id="sbUserBadge">Early Reader</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main-content">
+      <!-- Mobile Sub-header with Hamburger & Title -->
+      <div class="app-mobile-bar">
+        <button id="sidebarToggleBtn" class="icon-btn-round" aria-label="Open Navigation Menu">
+          <span>☰</span>
+        </button>
+        <span class="mobile-section-title" id="mobileCurrentSection">Dashboard Hub</span>
+        <button id="mobileAccessBtn" class="icon-btn-round" aria-label="Accessibility Settings">
+          <span>Aa</span>
+        </button>
+      </div>
+
+      <!-- APP TAB 1: DASHBOARD HUB -->
+      <section id="tab-dashboard" class="tab-pane active">
+        <!-- Top Welcome Card -->
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <span class="welcome-greeting" id="dashGreeting">Hello, Learner! 👋</span>
+            <h2 class="welcome-title">Ready to discover something new today?</h2>
+            <p class="welcome-sub">You have explored <strong>3 lessons</strong> this week. Keep up the awesome momentum!</p>
+          </div>
+          <div class="welcome-streak-card">
+            <span class="streak-flame">🔥</span>
+            <div>
+              <span class="streak-num" id="dashStreakCount">5 Days</span>
+              <span class="streak-lbl">Learning Streak</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Quick Path Cards -->
+        <div class="dash-paths-grid">
+          <div class="dash-path-card bg-pink-soft">
+            <div class="dp-header">
+              <span class="dp-icon">📖</span>
+              <span class="dp-badge bg-pink text-white">Journey A</span>
+            </div>
+            <h3>Continue Learning to Read</h3>
+            <p>Letter sounds, blending words, and interactive stories.</p>
+            <div class="dp-footer">
+              <button class="btn btn-pink btn-sm" data-switch-tab="learn-to-read">
+                Resume Reading →
+              </button>
+              <span class="dp-level-tag">Current: Level 2 Phonics</span>
+            </div>
+          </div>
+
+          <div class="dash-path-card bg-blue-soft">
+            <div class="dp-header">
+              <span class="dp-icon">💡</span>
+              <span class="dp-badge bg-blue text-white">Journey B</span>
+            </div>
+            <h3>Open Help Me Study Room</h3>
+            <p>Paste notes, get audio lessons, visual summaries & quizzes.</p>
+            <div class="dp-footer">
+              <button class="btn btn-blue btn-sm" data-switch-tab="help-me-study">
+                Open Study Studio →
+              </button>
+              <span class="dp-level-tag">3 Saved Notes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Widgets Grid -->
+        <div class="dash-widgets-grid">
+          <!-- Widget: Today's Learning Goal -->
+          <div class="dash-widget-card">
+            <div class="widget-header">
+              <h4>🎯 Today's Learning Goal</h4>
+              <span class="widget-meta">Daily Challenge</span>
+            </div>
+            <div class="goal-item">
+              <div class="goal-checkbox checked">✓</div>
+              <div class="goal-text">
+                <span class="goal-title">Practice 5 letter sounds in Phonics</span>
+                <span class="goal-progress">Completed • +20 XP</span>
+              </div>
+            </div>
+            <div class="goal-item">
+              <div class="goal-checkbox" id="goal2Check">○</div>
+              <div class="goal-text">
+                <span class="goal-title">Play 1 round of Sound Blending</span>
+                <span class="goal-progress">In progress</span>
+              </div>
+            </div>
+            <div class="goal-item">
+              <div class="goal-checkbox" id="goal3Check">○</div>
+              <div class="goal-text">
+                <span class="goal-title">Flip 5 Flashcards</span>
+                <span class="goal-progress">Not started yet</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget: Quiz of the Day -->
+          <div class="dash-widget-card">
+            <div class="widget-header">
+              <h4>⭐ Quiz of the Day</h4>
+              <span class="badge-mini bg-yellow text-text">Quick Check</span>
+            </div>
+            <div class="daily-quiz-box" id="dailyQuizContainer">
+              <p class="quiz-question" id="dailyQuizQuestion">Which word starts with the <strong>/s/</strong> sound?</p>
+              <div class="quiz-options-list" id="dailyQuizOptions">
+                <button class="quiz-option-btn" data-answer="cat">🐱 Cat</button>
+                <button class="quiz-option-btn" data-answer="sun" data-correct="true">☀️ Sun</button>
+                <button class="quiz-option-btn" data-answer="dog">🐶 Dog</button>
+              </div>
+              <div id="dailyQuizFeedback" class="quiz-feedback hidden"></div>
+            </div>
+          </div>
+
+          <!-- Widget: Recent Activities -->
+          <div class="dash-widget-card">
+            <div class="widget-header">
+              <h4>🕒 Recent Activities</h4>
+              <button class="text-link-sm" data-switch-tab="my-progress">View All</button>
+            </div>
+            <ul class="activity-timeline" id="dashActivityTimeline">
+              <li class="timeline-item">
+                <span class="timeline-icon bg-pink-light">🅰️</span>
+                <div class="timeline-info">
+                  <strong>Mastered Letter "M" & "S"</strong>
+                  <span>Phonics Playground • 15 mins ago</span>
+                </div>
+              </li>
+              <li class="timeline-item">
+                <span class="timeline-icon bg-blue-light">📄</span>
+                <div class="timeline-info">
+                  <strong>Studied "The Water Cycle"</strong>
+                  <span>Help Me Study • 1 hour ago</span>
+                </div>
+              </li>
+              <li class="timeline-item">
+                <span class="timeline-icon bg-green-light">🎮</span>
+                <div class="timeline-info">
+                  <strong>Score 100% on Letter Sound Match</strong>
+                  <span>Mini-Games • Today</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Widget: Achievements Spotlight -->
+          <div class="dash-widget-card">
+            <div class="widget-header">
+              <h4>🏅 Recent Badges</h4>
+              <span class="widget-meta">3 of 8 Unlocked</span>
+            </div>
+            <div class="badges-row">
+              <div class="badge-card unlocked" title="Alphabet Explorer: Discovered 10 letters">
+                <span class="badge-emoji">🔤</span>
+                <span class="badge-name">Alphabet Explorer</span>
+              </div>
+              <div class="badge-card unlocked" title="Phonics Starter: Mastered first 5 sounds">
+                <span class="badge-emoji">🎶</span>
+                <span class="badge-name">Sound Starter</span>
+              </div>
+              <div class="badge-card unlocked" title="Streak Star: 5 consecutive days">
+                <span class="badge-emoji">🔥</span>
+                <span class="badge-name">Streak Hero</span>
+              </div>
+              <div class="badge-card locked" title="Word Wizard: Blend 10 words">
+                <span class="badge-emoji">🧙‍♂️</span>
+                <span class="badge-name">Word Wizard</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APP TAB 2: LEARN TO READ (7-LEVEL ROADMAP & INTERACTIVE ACTIVITIES) -->
+      <section id="tab-learn-to-read" class="tab-pane">
+        <div class="pane-header">
+          <div>
+            <span class="section-pill bg-pink-light text-pink">Journey A: Learn to Read</span>
+            <h2 class="pane-title">Interactive Reading Progression</h2>
+            <p class="pane-subtitle">Follow the roadmap from letter recognition to fluent paragraph comprehension.</p>
+          </div>
+          <!-- Level Selector Pills -->
+          <div class="level-nav-pills" id="readingLevelNav" role="tablist">
+            <button class="level-pill active" data-level="1">1. Alphabet</button>
+            <button class="level-pill" data-level="2">2. Phonics</button>
+            <button class="level-pill" data-level="3">3. Blending</button>
+            <button class="level-pill" data-level="4">4. Word Reading</button>
+            <button class="level-pill" data-level="5">5. Sentences</button>
+            <button class="level-pill" data-level="6">6. Paragraphs</button>
+            <button class="level-pill" data-level="7">7. Comprehension</button>
+          </div>
+        </div>
+
+        <!-- LEVEL 1: ALPHABET & LETTER RECOGNITION -->
+        <div id="readLevel1" class="read-level-content active">
+          <div class="level-intro-card">
+            <div class="intro-left">
+              <h3>Level 1: Alphabet and Letter Recognition</h3>
+              <p>
+                Click any letter to explore both its <strong>letter name</strong> and its <strong>phonetic sound</strong>, accompanied by an example word and pronunciation.
+              </p>
+            </div>
+            <div class="intro-right">
+              <span class="badge-pill bg-purple-light text-purple">26 Letters</span>
+              <span class="badge-pill bg-green-light text-green">Sound vs Name</span>
+            </div>
+          </div>
+
+          <!-- Active Letter Spotlight Card -->
+          <div class="letter-spotlight-card" id="letterSpotlightCard">
+            <div class="spotlight-display">
+              <div class="spotlight-letter-box">
+                <span class="spotlight-big-letter" id="spotlightLetter">A</span>
+                <span class="spotlight-case" id="spotlightCase">Aa</span>
+              </div>
+              <div class="spotlight-details">
+                <div class="spotlight-header-row">
+                  <span class="phonetic-tag" id="spotlightPhonetic">/æ/ as in Apple</span>
+                  <span class="emoji-illustration" id="spotlightEmoji">🍎</span>
+                </div>
+                <h4 class="spotlight-word" id="spotlightWord">Apple</h4>
+                <p class="spotlight-sentence" id="spotlightSentence">"Apples are sweet, crunchy, and delicious."</p>
+                <div class="sound-guide-tip" id="spotlightTip">
+                  💡 <strong>Sound Guide:</strong> Open your mouth wide like you are taking a big bite of an apple!
+                </div>
+
+                <div class="spotlight-audio-actions">
+                  <button class="btn btn-purple btn-sm" id="playLetterSoundBtn">
+                    <span>🔊 Play Letter Sound (/æ/)</span>
+                  </button>
+                  <button class="btn btn-secondary btn-sm" id="playLetterNameBtn">
+                    <span>🗣️ Play Letter Name ("Ay")</span>
+                  </button>
+                  <button class="btn btn-pink btn-sm" id="playExampleWordBtn">
+                    <span>🍎 Play Word ("Apple")</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="spotlight-nav-controls">
+              <button class="btn btn-secondary btn-sm" id="prevLetterBtn">← Previous Letter</button>
+              <span class="spotlight-counter" id="letterCounter">Letter 1 of 26</span>
+              <button class="btn btn-primary btn-sm" id="nextLetterBtn">Next Letter →</button>
+            </div>
+          </div>
+
+          <!-- Alphabet Grid (A-Z) -->
+          <div class="alphabet-grid" id="alphabetGrid" aria-label="Alphabet Letters A to Z">
+            <!-- Dynamically populated via script.js -->
+          </div>
+        </div>
+
+        <!-- LEVEL 2: PHONICS PLAYGROUND -->
+        <div id="readLevel2" class="read-level-content hidden">
+          <div class="level-intro-card">
+            <div class="intro-left">
+              <h3>Level 2: Phonics Playground & Sound Patterns</h3>
+              <p>
+                Letters make different sounds! Explore single letter sounds, digraphs (/sh/, /ch/, /th/), and common vowel patterns with listen-and-repeat activities.
+              </p>
+            </div>
+            <div class="intro-right">
+              <button class="btn btn-yellow btn-sm" data-switch-tab="phonics-playground">
+                <span>Play Games with These Sounds ➔</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Phonics Categories Filter -->
+          <div class="phonics-category-tabs">
+            <button class="category-pill active" data-ph-cat="short-vowels">Short Vowels</button>
+            <button class="category-pill" data-ph-cat="consonants">Single Consonants</button>
+            <button class="category-pill" data-ph-cat="digraphs">Digraphs (/sh/, /ch/, /th/)</button>
+            <button class="category-pill" data-ph-cat="vowel-teams">Vowel Teams (/ee/, /oo/, /ar/)</button>
+          </div>
+
+          <div class="phonics-cards-grid" id="phonicsCardsGrid">
+            <!-- Populated via script.js -->
+          </div>
+
+          <!-- Interactive Phonics Practice Box -->
+          <div class="phonics-challenge-card" id="phonicsPracticeBox">
+            <div class="challenge-header">
+              <span class="challenge-badge">Listen & Repeat Challenge</span>
+              <span class="sound-tag" id="challengeSoundTag">Sound: /ʃ/ (sh)</span>
+            </div>
+            <div class="challenge-body">
+              <div class="challenge-prompt">
+                <span class="challenge-icon" id="challengeIcon">🚢</span>
+                <h4 id="challengeWord">Ship</h4>
+                <p id="challengeInstruction">Listen to the /ʃ/ sound in <strong>Ship</strong>, then practice saying it out loud!</p>
+              </div>
+              <div class="challenge-controls">
+                <button class="btn btn-purple btn-large" id="playPhonicsPracticeBtn">
+                  <span>🔊 Listen to Sound</span>
+                </button>
+                <button class="btn btn-secondary btn-large" id="playPhonicsWordBtn">
+                  <span>🚢 Listen to Word</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEVEL 3: SOUND BLENDING -->
+        <div id="readLevel3" class="read-level-content hidden">
+          <div class="level-intro-card">
+            <div class="intro-left">
+              <h3>Level 3: Sound Blending (Phoneme to Word)</h3>
+              <p>
+                Tap each letter to hear its isolated sound, then press <strong>Blend Sounds</strong> to watch the sounds join together into a complete word!
+              </p>
+            </div>
+          </div>
+
+          <!-- Interactive Blender Station -->
+          <div class="blender-station-card">
+            <div class="blender-word-selector">
+              <span class="blender-label">Choose a word to blend:</span>
+              <div class="blender-chips" id="blenderWordChips">
+                <button class="blend-word-chip active" data-word="cat">cat 🐱</button>
+                <button class="blend-word-chip" data-word="sun">sun ☀️</button>
+                <button class="blend-word-chip" data-word="pen">pen 🖊️</button>
+                <button class="blend-word-chip" data-word="dog">dog 🐶</button>
+                <button class="blend-word-chip" data-word="bat">bat 🦇</button>
+                <button class="blend-word-chip" data-word="fish">fish 🐟</button>
+                <button class="blend-word-chip" data-word="map">map 🗺️</button>
+              </div>
+            </div>
+
+            <!-- Visual Sound Stage -->
+            <div class="blend-stage">
+              <div class="blend-tiles-row" id="blendTilesContainer">
+                <!-- Dynamically generated letter tiles -->
+                <div class="blend-tile" data-char="c" data-sound="kuh">
+                  <span class="tile-char">c</span>
+                  <span class="tile-sound">/k/</span>
+                </div>
+                <div class="blend-tile" data-char="a" data-sound="æ">
+                  <span class="tile-char">a</span>
+                  <span class="tile-sound">/æ/</span>
+                </div>
+                <div class="blend-tile" data-char="t" data-sound="tuh">
+                  <span class="tile-char">t</span>
+                  <span class="tile-sound">/t/</span>
+                </div>
+              </div>
+
+              <!-- Animated Connector Beam -->
+              <div class="blend-beam-wrapper">
+                <div class="blend-beam-fill" id="blendBeam"></div>
+              </div>
+
+              <!-- Result Word -->
+              <div class="blend-result-box" id="blendResultBox">
+                <span class="result-word" id="blendResultWord">cat</span>
+                <span class="result-emoji" id="blendResultEmoji">🐱</span>
+              </div>
+            </div>
+
+            <div class="blender-actions">
+              <button class="btn btn-primary btn-large" id="triggerBlendBtn">
+                <span>▶ Blend Sounds Step-by-Step</span>
+              </button>
+              <button class="btn btn-secondary" id="playFullWordAudioBtn">
+                <span>🔊 Hear Complete Word</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sound Blending Practice Activity -->
+          <div class="blender-activity-card">
+            <h4>🧩 Quick Activity: Find the Missing Final Sound</h4>
+            <p>What sound finishes the word: <strong>ca__</strong> (Cat 🐱)?</p>
+            <div class="missing-sound-options" id="missingSoundOptions">
+              <button class="btn-sound-choice" data-correct="true">/t/ (t)</button>
+              <button class="btn-sound-choice" data-correct="false">/p/ (p)</button>
+              <button class="btn-sound-choice" data-correct="false">/g/ (g)</button>
+            </div>
+            <div id="missingSoundFeedback" class="challenge-feedback hidden"></div>
+          </div>
+        </div>
+
+        <!-- LEVEL 4: WORD READING & PRONUNCIATION -->
+        <div id="readLevel4" class="read-level-content hidden">
+          <div class="level-intro-card">
+            <div class="intro-left">
+              <h3>Level 4: Word Reading, Syllables & Pronunciation</h3>
+              <p>
+                Break words down into syllables, hear natural pronunciation at normal and slow speeds, and practice reading words aloud.
+              </p>
+            </div>
+          </div>
+
+          <div class="word-reading-card" id="wordReadingCard">
+            <div class="word-reading-header">
+              <div class="word-visual-large" id="wordReadEmoji">🦋</div>
+              <div>
+                <h3 class="word-read-title" id="wordReadTitle">Butterfly</h3>
+                <div class="syllable-chips" id="wordSyllables">
+                  <button class="syllable-chip">but</button>
+                  <span class="syllable-dot">•</span>
+                  <button class="syllable-chip">ter</button>
+                  <span class="syllable-dot">•</span>
+                  <button class="syllable-chip">fly</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="word-read-details">
+              <div class="word-detail-item">
+                <span class="detail-label">Meaning:</span>
+                <p id="wordReadMeaning">A colourful flying insect with large, delicate wings that loves garden flowers.</p>
+              </div>
+              <div class="word-detail-item">
+                <span class="detail-label">Example Sentence:</span>
+                <p id="wordReadSentence">"A colourful <strong>butterfly</strong> rested gently on the sunny flower."</p>
+              </div>
+            </div>
+
+            <div class="word-read-audio-toolbar">
+              <button class="btn btn-primary" id="playWordNormalBtn">
+                <span>🔊 Listen (Normal Speed)</span>
+              </button>
+              <button class="btn btn-secondary" id="playWordSlowBtn">
+                <span>🐢 Listen Slower (0.75x)</span>
+              </button>
+              <button class="btn btn-purple" id="playSentenceAudioBtn">
+                <span>📖 Listen to Sentence</span>
+              </button>
+            </div>
+
+            <!-- Speech Practice (Web Speech API with honest notice) -->
+            <div class="speech-practice-box">
+              <div class="sp-header">
+                <strong>🎙️ Speech Practice (Browser Voice Check)</strong>
+                <span class="badge-mini bg-sky-light text-blue">Demo Speech Tool</span>
+              </div>
+              <p class="sp-desc">Click the microphone to test saying the word into your browser microphone.</p>
+              <div class="sp-controls">
+                <button class="btn btn-pink" id="micPracticeBtn">
+                  <span>🎙️ Start Speaking ("Butterfly")</span>
+                </button>
+                <span class="sp-status" id="micStatusText">Ready when you are!</span>
+              </div>
+              <div id="micFeedbackText" class="sp-feedback-box hidden"></div>
+              <p class="sp-disclaimer">
+                <em>Notice: Browser speech recognition is an interactive practice aid, not a certified clinical pronunciation assessment.</em>
+              </p>
+            </div>
+
+            <!-- Word Navigation -->
+            <div class="word-nav-footer">
+              <button class="btn btn-secondary btn-sm" id="prevWordBtn">← Previous Word</button>
+              <span id="wordIndexLabel">Word 1 of 6</span>
+              <button class="btn btn-primary btn-sm" id="nextWordBtn">Next Word →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEVEL 5: SENTENCE BUILDING -->
+        <div id="readLevel5" class="read-level-content hidden">
+          <div class="level-intro-card">
+            <div class="intro-left">
+              <h3>Level 5: Sentence Building & Word Order</h3>
+              <p>
+                Click or tap the word tiles in the correct sequence to build a complete sentence, then listen to the sentence with word highlighting!
+              </p>
+            </div>
+          </div>
+
+          <div class="sentence-builder-card" id="sentenceBuilderCard">
+            <div class="sb-prompt">
+              <span class="sb-illustration" id="sbIllustration">🐱💤</span>
+              <div>
+                <h4>Target Sentence Hint:</h4>
+                <p id="sbHint">"The cute cat is sleeping peacefully."</p>
+              </div>
+            </div>
+
+            <!-- Sentence Construction Bay -->
+            <div class="sentence-drop-zone" id="sentenceDropZone">
+              <span class="drop-placeholder" id="dropPlaceholder">Tap words below to place them here in order...</span>
+            </div>
+
+            <!-- Available Words Bank -->
+            <div class="word-bank-container">
+              <span class="bank-label">Available Word Tiles:</span>
+              <div class="word-bank" id="wordBankTiles">
+                <!-- Word tiles inserted via script.js -->
+              </div>
+            </div>
+
+            <div class="sentence-builder-actions">
+              <button class="btn btn-primary" id="checkSentenceBtn">
+                <span>✓ Check My Sentence</span>
+              </button>
+              <button class="btn btn-secondary" id="resetSentenceBtn">
+                <span>🔄 Reset Tiles</span>
+              </button>
+              <button class="btn btn-purple" id="listenSentenceBtn">
+                <span>🔊 Hear Sentence</span>
+              </button>
+            </div>
+
+            <div id="sentenceFeedback" class="sentence-feedback hidden"></div>
+          </div>
+        </div>
+
+        <!-- LEVEL 6: PARAGRAPH READING -->
+        <div id="readLevel6" class="read-level-content hidden">
+          <div class="level-intro-card">
+            <div class="intro-left">
+              <h3>Level 6: Paragraph Reading with Read-Along Karaoke</h3>
+              <p>
+                Read engaging short stories. Press <strong>Read-Along Audio</strong> to follow words as they are spoken, or click <em>any individual word</em> to hear it immediately!
+              </p>
+            </div>
+            <div class="intro-right">
+              <select id="storySelect" class="form-select" aria-label="Select story to read">
+                <option value="seed">Story 1: The Little Seed's Journey 🌱</option>
+                <option value="dolphin">Story 2: The Friendly Ocean Dolphin 🐬</option>
+                <option value="stars">Story 3: Leo's Telescope Night ⭐</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="paragraph-reader-card">
+            <!-- Story Reading Controls -->
+            <div class="story-audio-bar">
+              <div class="audio-playback-btns">
+                <button class="btn btn-primary btn-sm" id="playStoryBtn">
+                  <span>▶ Read-Along Audio</span>
+                </button>
+                <button class="btn btn-secondary btn-sm" id="pauseStoryBtn">
+                  <span>⏸ Pause</span>
+                </button>
+                <button class="btn btn-secondary btn-sm" id="stopStoryBtn">
+                  <span>⏹ Stop</span>
+                </button>
+              </div>
+              <div class="story-speed-control">
+                <label for="storySpeedSelect">Speed:</label>
+                <select id="storySpeedSelect" class="form-select-sm">
+                  <option value="0.8">0.8x (Gentle)</option>
+                  <option value="1.0" selected>1.0x (Normal)</option>
+                  <option value="1.2">1.2x (Brisk)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Story Text Area with Clickable Words -->
+            <article class="story-content-box" id="storyContentBox">
+              <h3 class="story-title" id="storyTitle">The Little Seed's Journey</h3>
+              <div class="story-paragraphs" id="storyParagraphs">
+                <!-- Words wrapped in spans for karaoke and click-to-speech -->
+              </div>
+            </article>
+
+            <div class="story-vocab-helper">
+              <span class="vocab-title">💡 Unfamiliar Word Helper:</span>
+              <span>Tap or click any word in the text above to hear its clear pronunciation instantly!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEVEL 7: READING COMPREHENSION -->
+        <div id="readLevel7" class="read-level-content hidden">
+          <div class="level-intro-card">
+            <div class="intro-left">
+              <h3>Level 7: Reading Comprehension & Thinking Skills</h3>
+              <p>
+                Test your understanding of the story with encouraging questions. Learn to find main ideas, remember key details, and explore new vocabulary!
+              </p>
+            </div>
+          </div>
+
+          <div class="comprehension-card" id="comprehensionCard">
+            <div class="comp-header">
+              <span class="comp-story-badge" id="compStoryBadge">Story: The Little Seed 🌱</span>
+              <span class="comp-question-num" id="compQuestionCounter">Question 1 of 3</span>
+            </div>
+
+            <div class="comp-question-body">
+              <h4 class="comp-question-text" id="compQuestionText">What helped the little seed grow into a tall flower?</h4>
+              <div class="comp-answers-list" id="compAnswersList">
+                <!-- Generated dynamically via script.js -->
+              </div>
+            </div>
+
+            <div id="compFeedback" class="comp-feedback-box hidden"></div>
+
+            <div class="comp-nav-footer">
+              <button class="btn btn-secondary btn-sm" id="prevCompBtn" disabled>← Previous</button>
+              <button class="btn btn-primary btn-sm" id="nextCompBtn">Next Question →</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APP TAB 3: PHONICS PLAYGROUND (3+ PLAYABLE GAMES) -->
+      <section id="tab-phonics-playground" class="tab-pane">
+        <div class="pane-header">
+          <div>
+            <span class="section-pill bg-yellow-light text-text">Interactive Games</span>
+            <h2 class="pane-title">Phonics Playground Games</h2>
+            <p class="pane-subtitle">Play interactive mini-games to sharpen letter sound recognition, word building, and spelling.</p>
+          </div>
+          <!-- Game Switcher Pills -->
+          <div class="game-selector-pills" role="tablist">
+            <button class="game-pill active" data-game="sound-match">🎮 1. Sound Match</button>
+            <button class="game-pill" data-game="build-word">🧩 2. Build the Word</button>
+            <button class="game-pill" data-game="match-picture">🖼️ 3. Match Picture</button>
+            <button class="game-pill" data-game="missing-letter">🕵️ 4. Missing Letter</button>
+          </div>
+        </div>
+
+        <!-- GAME 1: LETTER SOUND MATCH -->
+        <div id="game-sound-match" class="game-content active">
+          <div class="game-arena-card">
+            <div class="game-score-bar">
+              <div class="score-badge">Score: <strong id="gsmScore">0</strong></div>
+              <div class="round-badge">Round: <strong id="gsmRound">1/5</strong></div>
+              <div class="streak-badge">Streak: <strong id="gsmStreak">0 🔥</strong></div>
+            </div>
+
+            <div class="game-prompt-center">
+              <span class="game-audio-icon">🎧</span>
+              <h3>Listen closely to the sound:</h3>
+              <button class="btn btn-purple btn-large" id="gsmPlaySoundBtn">
+                <span>🔊 Hear Sound Again</span>
+              </button>
+              <p class="game-instruction">Which letter or pattern makes this sound?</p>
+            </div>
+
+            <div class="game-choices-grid" id="gsmChoicesGrid">
+              <!-- 4 large clickable letter choices -->
+            </div>
+
+            <div id="gsmFeedback" class="game-feedback-banner hidden"></div>
+          </div>
+        </div>
+
+        <!-- GAME 2: BUILD THE WORD -->
+        <div id="game-build-word" class="game-content hidden">
+          <div class="game-arena-card">
+            <div class="game-score-bar">
+              <div class="score-badge">Score: <strong id="gbwScore">0</strong></div>
+              <div class="round-badge">Word: <strong id="gbwRound">1/5</strong></div>
+            </div>
+
+            <div class="game-prompt-center">
+              <div class="target-illustration-large" id="gbwIllustration">🐱</div>
+              <h3 id="gbwPromptText">Spell the word: <span class="text-purple">"Cat"</span></h3>
+              <button class="btn btn-secondary btn-sm" id="gbwAudioHintBtn">
+                <span>🔊 Hear Word</span>
+              </button>
+            </div>
+
+            <!-- Target Slots -->
+            <div class="build-slots-row" id="gbwSlotsRow">
+              <!-- Slot boxes -->
+            </div>
+
+            <!-- Available Letters to click -->
+            <div class="build-tiles-bank" id="gbwTilesBank">
+              <!-- Scrambled letter tiles -->
+            </div>
+
+            <div class="build-actions-row">
+              <button class="btn btn-secondary" id="gbwResetBtn">Reset Tiles</button>
+              <button class="btn btn-primary" id="gbwCheckBtn">Check Word ✓</button>
+            </div>
+
+            <div id="gbwFeedback" class="game-feedback-banner hidden"></div>
+          </div>
+        </div>
+
+        <!-- GAME 3: MATCH WORD TO PICTURE -->
+        <div id="game-match-picture" class="game-content hidden">
+          <div class="game-arena-card">
+            <div class="game-score-bar">
+              <div class="score-badge">Matches: <strong id="gmpScore">0/4</strong></div>
+              <button class="btn btn-secondary btn-sm" id="gmpRestartBtn">Restart Round</button>
+            </div>
+
+            <div class="game-prompt-center">
+              <h3>Match Each Word to Its Picture!</h3>
+              <p>Click a word card on the left, then click its matching picture on the right.</p>
+            </div>
+
+            <div class="match-columns-grid">
+              <div class="match-column" id="gmpWordsColumn">
+                <!-- 4 Word Cards -->
+              </div>
+              <div class="match-column" id="gmpPicturesColumn">
+                <!-- 4 Picture Cards -->
+              </div>
+            </div>
+
+            <div id="gmpFeedback" class="game-feedback-banner hidden"></div>
+          </div>
+        </div>
+
+        <!-- GAME 4: MISSING LETTER DETECTIVE -->
+        <div id="game-missing-letter" class="game-content hidden">
+          <div class="game-arena-card">
+            <div class="game-score-bar">
+              <div class="score-badge">Score: <strong id="gmlScore">0</strong></div>
+              <div class="round-badge">Case: <strong id="gmlRound">1/5</strong></div>
+            </div>
+
+            <div class="game-prompt-center">
+              <span class="target-illustration-large" id="gmlIllustration">☀️</span>
+              <div class="missing-word-display" id="gmlWordDisplay">
+                <span class="char-box">S</span>
+                <span class="char-box missing">?</span>
+                <span class="char-box">N</span>
+              </div>
+              <p class="game-instruction">Detective, which vowel is missing?</p>
+            </div>
+
+            <div class="missing-choices-row" id="gmlChoicesRow">
+              <button class="vowel-choice-btn">A</button>
+              <button class="vowel-choice-btn">E</button>
+              <button class="vowel-choice-btn">I</button>
+              <button class="vowel-choice-btn">O</button>
+              <button class="vowel-choice-btn">U</button>
+            </div>
+
+            <div id="gmlFeedback" class="game-feedback-banner hidden"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APP TAB 4: HELP ME STUDY (JOURNEY B WORKSPACE) -->
+      <section id="tab-help-me-study" class="tab-pane">
+        <div class="pane-header">
+          <div>
+            <span class="section-pill bg-blue-light text-blue">Journey B: Help Me Study</span>
+            <h2 class="pane-title">Study Assistant Studio</h2>
+            <p class="pane-subtitle">Paste or upload study material to generate simplified explanations, audio lessons, visual summaries, quizzes, and flashcards.</p>
+          </div>
+        </div>
+
+        <!-- Input Material Workspace -->
+        <div class="study-input-card">
+          <div class="study-input-header">
+            <h4>1. Input Study Material</h4>
+            <!-- Preset Samples Picker -->
+            <div class="preset-picker">
+              <span>Or choose a sample lesson:</span>
+              <button class="preset-pill" data-preset="photosynthesis">Photosynthesis 🌿</button>
+              <button class="preset-pill" data-preset="watercycle">Water Cycle 💧</button>
+              <button class="preset-pill" data-preset="solarsystem">Solar System 🪐</button>
+            </div>
+          </div>
+
+          <!-- Document Upload Fallback & Text Area -->
+          <div class="study-input-options">
+            <div class="upload-dropzone" id="fileUploadDropzone">
+              <input type="file" id="studyFileInput" accept=".txt,.md,.pdf,.png,.jpg" class="file-input-hidden">
+              <span class="upload-icon">📂</span>
+              <span class="upload-label"><strong>Click to upload notes</strong> (.txt, .md, or .pdf)</span>
+              <span class="upload-hint">Text files are parsed instantly in browser. PDFs use clean fallback text loader.</span>
+            </div>
+
+            <div class="text-paste-zone">
+              <label for="studyTextInput" class="sr-only">Paste Study Material Text</label>
+              <textarea id="studyTextInput" class="study-textarea" rows="6" placeholder="Paste your study notes, textbook paragraph, or homework assignment here... (e.g. 'Photosynthesis is the process where green plants turn sunlight, water, and carbon dioxide into oxygen and food energy...')"></textarea>
+            </div>
+          </div>
+
+          <div class="study-actions-row">
+            <button class="btn btn-blue btn-large" id="processMaterialBtn">
+              <span>⚡ Process Material & Generate Study Tools</span>
+            </button>
+            <button class="btn btn-secondary" id="clearStudyTextBtn">Clear Input</button>
+            <span class="study-notice-tag">🔒 100% Client-Side Local Processing</span>
+          </div>
+        </div>
+
+        <!-- Generated Study Suite (Revealed after processing) -->
+        <div id="studyResultsSuite" class="study-results-suite">
+          <!-- Tools Navigation Sub-tabs -->
+          <div class="study-tools-nav">
+            <button class="study-tool-tab active" data-tool="easy-explanation">📖 Easy Explanation</button>
+            <button class="study-tool-tab" data-tool="listen-learn">🎧 Listen & Learn</button>
+            <button class="study-tool-tab" data-tool="key-points">📌 Key Takeaways</button>
+            <button class="study-tool-tab" data-tool="visual-summary">🗺️ Visual Summary</button>
+            <button class="study-tool-tab" data-tool="quiz-generator">📝 Practice Quiz</button>
+            <button class="study-tool-tab" data-tool="flashcard-generator">🗂️ Generated Flashcards</button>
+          </div>
+
+          <!-- Tool 1: Easy Explanation -->
+          <div id="tool-easy-explanation" class="study-tool-pane active">
+            <div class="tool-content-card">
+              <div class="tc-header">
+                <h3 id="studyExplTitle">🌿 Simplified Concept: Photosynthesis</h3>
+                <span class="badge-pill bg-green-light text-green">Friendly Plain Language</span>
+              </div>
+              <div class="tc-body" id="studyExplBody">
+                <!-- Generated simplified explanation content -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Tool 2: Listen & Learn Audio Player -->
+          <div id="tool-listen-learn" class="study-tool-pane hidden">
+            <div class="tool-content-card">
+              <div class="audio-player-studio">
+                <div class="ap-header">
+                  <div class="ap-title-box">
+                    <span class="ap-icon">🎧</span>
+                    <div>
+                      <h4 id="audioPlayerTitle">Audio Lesson: Photosynthesis</h4>
+                      <span class="ap-status" id="audioPlayerStatus">Ready to play</span>
+                    </div>
+                  </div>
+                  <div class="ap-voice-selector">
+                    <label for="voiceSelect">Voice:</label>
+                    <select id="voiceSelect" class="form-select-sm" aria-label="Select Speech Voice">
+                      <option value="default">Default Browser Voice</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Audio Scrubber & Controls -->
+                <div class="ap-controls-bar">
+                  <button class="ap-btn-ctrl" id="apPlayBtn" title="Play Narration">▶ Play</button>
+                  <button class="ap-btn-ctrl" id="apPauseBtn" title="Pause Narration">⏸ Pause</button>
+                  <button class="ap-btn-ctrl" id="apStopBtn" title="Stop Narration">⏹ Stop</button>
+                  <div class="ap-speed-box">
+                    <label for="apSpeedRate">Speed: <strong id="apSpeedVal">1.0x</strong></label>
+                    <input type="range" id="apSpeedRate" min="0.75" max="1.5" step="0.25" value="1.0" class="speed-slider">
+                  </div>
+                </div>
+
+                <!-- Text Readout with Karaoke Highlight -->
+                <div class="ap-text-readout" id="apTextReadout">
+                  <!-- Sentences with live highlight as spoken -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tool 3: Key Points -->
+          <div id="tool-key-points" class="study-tool-pane hidden">
+            <div class="tool-content-card">
+              <div class="tc-header">
+                <h3>📌 Important Key Points to Remember</h3>
+              </div>
+              <div class="key-points-list" id="studyKeyPointsList">
+                <!-- List items -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Tool 4: Visual Summary Concept Map -->
+          <div id="tool-visual-summary" class="study-tool-pane hidden">
+            <div class="tool-content-card">
+              <div class="tc-header">
+                <h3>🗺️ Visual Concept Mind-Map</h3>
+                <span class="badge-mini bg-purple-light text-purple">Hierarchical Breakdown</span>
+              </div>
+              <div class="concept-map-container" id="studyConceptMap">
+                <!-- Concept nodes -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Tool 5: Quiz Generator -->
+          <div id="tool-quiz-generator" class="study-tool-pane hidden">
+            <div class="tool-content-card">
+              <div class="tc-header">
+                <h3>📝 Interactive Practice Quiz</h3>
+                <span class="badge-pill bg-yellow text-text" id="genQuizScoreBadge">Score: 0/3</span>
+              </div>
+              <div class="generated-quiz-container" id="generatedQuizContainer">
+                <!-- 3 dynamic quiz questions -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Tool 6: Flashcard Generator -->
+          <div id="tool-flashcard-generator" class="study-tool-pane hidden">
+            <div class="tool-content-card">
+              <div class="tc-header">
+                <h3>🗂️ Generated Flashcards</h3>
+                <button class="btn btn-green btn-sm" id="exportToFlashcardsBtn">
+                  <span>+ Save All to My Flashcards Hub</span>
+                </button>
+              </div>
+              <div class="gen-flashcards-grid" id="genFlashcardsGrid">
+                <!-- Generated cards with flip -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APP TAB 5: FLASHCARDS HUB -->
+      <section id="tab-flashcards" class="tab-pane">
+        <div class="pane-header">
+          <div>
+            <span class="section-pill bg-purple-light text-purple">Study Decks</span>
+            <h2 class="pane-title">Interactive Flashcards Hub</h2>
+            <p class="pane-subtitle">Flip cards, mark known terms, shuffle, and create your own study decks.</p>
+          </div>
+          <div class="flashcards-top-actions">
+            <button class="btn btn-primary btn-sm" id="openCreateCardModalBtn">
+              <span>+ Create Flashcard</span>
+            </button>
+            <select id="flashcardDeckSelect" class="form-select" aria-label="Select Flashcard Deck">
+              <option value="sight-words">Sight Words (Early Reading)</option>
+              <option value="science-nature">Science & Nature Concepts</option>
+              <option value="phonics-blends">Phonics Digraphs & Blends</option>
+              <option value="custom">My Custom Cards</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flashcards-viewer-area">
+          <div class="fc-stats-bar">
+            <span>Card <strong id="fcCurrentIndex">1</strong> of <strong id="fcTotalCards">5</strong></span>
+            <span class="fc-mastered-tag">Mastered: <strong id="fcMasteredCount">0</strong></span>
+            <span class="fc-review-tag">Review: <strong id="fcReviewCount">0</strong></span>
+          </div>
+
+          <!-- 3D Flippable Card -->
+          <div class="flashcard-3d-scene">
+            <div class="flashcard-card" id="activeFlashcard" tabindex="0" role="button" aria-label="Flashcard. Tap or press space to flip.">
+              <!-- Front -->
+              <div class="flashcard-face flashcard-front">
+                <span class="fc-category-badge" id="fcFrontCategory">Sight Word</span>
+                <div class="fc-center-content">
+                  <h3 class="fc-front-term" id="fcFrontTerm">Because</h3>
+                  <span class="fc-hint-text">Tap or press Space to flip 🔄</span>
+                </div>
+                <button class="fc-audio-btn" id="fcAudioFrontBtn" title="Pronounce Term">🔊</button>
+              </div>
+              <!-- Back -->
+              <div class="flashcard-face flashcard-back">
+                <span class="fc-category-badge">Definition / Meaning</span>
+                <div class="fc-center-content">
+                  <p class="fc-back-meaning" id="fcBackMeaning">For the reason that; gives an explanation for why something happened.</p>
+                  <p class="fc-back-example" id="fcBackExample">"I wore my coat <strong>because</strong> it was chilly outside."</p>
+                </div>
+                <button class="fc-audio-btn" id="fcAudioBackBtn" title="Read Definition">🔊</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls below card -->
+          <div class="fc-controls-row">
+            <button class="btn btn-secondary" id="fcPrevBtn">← Previous</button>
+            <button class="btn btn-pink" id="fcNeedPracticeBtn">
+              <span>⚠️ Need Practice</span>
+            </button>
+            <button class="btn btn-green" id="fcMasteredBtn">
+              <span>✓ Got It! Mastered</span>
+            </button>
+            <button class="btn btn-secondary" id="fcShuffleBtn" title="Shuffle Deck">
+              <span>🔀 Shuffle</span>
+            </button>
+            <button class="btn btn-primary" id="fcNextBtn">Next →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- APP TAB 6: MY PROGRESS & ANALYTICS -->
+      <section id="tab-my-progress" class="tab-pane">
+        <div class="pane-header">
+          <div>
+            <span class="section-pill bg-green-light text-green">Effort & Milestones</span>
+            <h2 class="pane-title">My Learning Progress</h2>
+            <p class="pane-subtitle">Transparent tracking of real practice activities, quiz scores, and unlocked milestones.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="resetProgressDemoBtn">
+            <span>🔄 Reset Progress Data</span>
+          </button>
+        </div>
+
+        <!-- Metrics Overview Tiles -->
+        <div class="progress-stats-grid">
+          <div class="stat-card">
+            <span class="stat-icon bg-pink-light">📖</span>
+            <div class="stat-info">
+              <span class="stat-number" id="progLessonsCount">8</span>
+              <span class="stat-label">Lessons Explored</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon bg-purple-light">🔤</span>
+            <div class="stat-info">
+              <span class="stat-number" id="progWordsCount">42</span>
+              <span class="stat-label">Words & Sounds Practiced</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon bg-yellow-light">⭐</span>
+            <div class="stat-info">
+              <span class="stat-number" id="progQuizAvg">92%</span>
+              <span class="stat-label">Average Quiz Score</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon bg-green-light">🔥</span>
+            <div class="stat-info">
+              <span class="stat-number" id="progStreak">5 Days</span>
+              <span class="stat-label">Daily Streak</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts & Activity Split -->
+        <div class="progress-charts-grid">
+          <!-- Weekly Activity Chart (SVG/CSS) -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h4>📅 Weekly Learning Minutes</h4>
+              <span class="chart-meta">Goal: 20 min/day</span>
+            </div>
+            <div class="bar-chart-container" id="weeklyBarChart">
+              <div class="bar-col">
+                <div class="bar-fill bg-purple" style="height: 60%;" title="Mon: 18 mins"></div>
+                <span class="bar-day">Mon</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar-fill bg-purple" style="height: 80%;" title="Tue: 24 mins"></div>
+                <span class="bar-day">Tue</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar-fill bg-purple" style="height: 45%;" title="Wed: 14 mins"></div>
+                <span class="bar-day">Wed</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar-fill bg-purple" style="height: 95%;" title="Thu: 28 mins"></div>
+                <span class="bar-day">Thu</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar-fill bg-purple" style="height: 70%;" title="Fri: 21 mins"></div>
+                <span class="bar-day">Fri</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar-fill bg-purple" style="height: 85%;" title="Sat: 25 mins"></div>
+                <span class="bar-day">Sat</span>
+              </div>
+              <div class="bar-col">
+                <div class="bar-fill bg-pink" style="height: 90%;" title="Sun: 27 mins"></div>
+                <span class="bar-day">Today</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skill Mastery Radar/Progress Bars -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h4>🎯 Reading Skills Breakdown</h4>
+              <span class="chart-meta">Self-Paced Mastery</span>
+            </div>
+            <div class="skills-bars-list">
+              <div class="skill-bar-item">
+                <div class="sb-label-row">
+                  <span>Letter Recognition (A-Z)</span>
+                  <span class="text-green">100%</span>
+                </div>
+                <div class="sb-track"><div class="sb-prog bg-green" style="width: 100%;"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="sb-label-row">
+                  <span>Phonics & Digraphs (/sh/, /ch/)</span>
+                  <span class="text-purple">75%</span>
+                </div>
+                <div class="sb-track"><div class="sb-prog bg-purple" style="width: 75%;"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="sb-label-row">
+                  <span>Sound Blending (CVC Words)</span>
+                  <span class="text-pink">60%</span>
+                </div>
+                <div class="sb-track"><div class="sb-prog bg-pink" style="width: 60%;"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="sb-label-row">
+                  <span>Sentence Building & Order</span>
+                  <span class="text-sky">50%</span>
+                </div>
+                <div class="sb-track"><div class="sb-prog bg-sky" style="width: 50%;"></div></div>
+              </div>
+              <div class="skill-bar-item">
+                <div class="sb-label-row">
+                  <span>Comprehension & Vocabulary</span>
+                  <span class="text-yellow">70%</span>
+                </div>
+                <div class="sb-track"><div class="sb-prog bg-yellow" style="width: 70%;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Badges Wall -->
+        <div class="badges-wall-card">
+          <div class="chart-header">
+            <h4>🏆 Learning Badges Wall</h4>
+            <span class="chart-meta">Celebrate Every Victory!</span>
+          </div>
+          <div class="badges-grid-full">
+            <div class="badge-item-lg unlocked">
+              <span class="b-emoji">🔤</span>
+              <span class="b-title">Alphabet Explorer</span>
+              <span class="b-status">Unlocked</span>
+            </div>
+            <div class="badge-item-lg unlocked">
+              <span class="b-emoji">🎶</span>
+              <span class="b-title">Phonics Pioneer</span>
+              <span class="b-status">Unlocked</span>
+            </div>
+            <div class="badge-item-lg unlocked">
+              <span class="b-emoji">🧩</span>
+              <span class="b-title">Blending Master</span>
+              <span class="b-status">Unlocked</span>
+            </div>
+            <div class="badge-item-lg unlocked">
+              <span class="b-emoji">🔥</span>
+              <span class="b-title">Streak Champion</span>
+              <span class="b-status">Unlocked</span>
+            </div>
+            <div class="badge-item-lg locked">
+              <span class="b-emoji">📚</span>
+              <span class="b-title">Story Explorer</span>
+              <span class="b-status">Locked (Read 3 stories)</span>
+            </div>
+            <div class="badge-item-lg locked">
+              <span class="b-emoji">🧠</span>
+              <span class="b-title">Study Hero</span>
+              <span class="b-status">Locked (Process 5 notes)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APP TAB 7: PARENT / TEACHER VIEW -->
+      <section id="tab-parent-teacher" class="tab-pane">
+        <div class="pane-header">
+          <div>
+            <span class="section-pill bg-purple-light text-purple">Support Dashboard</span>
+            <h2 class="pane-title">Parent and Teacher Portal</h2>
+            <p class="pane-subtitle">Transparent progress reports, skill breakdowns, and supportive practice ideas without medical diagnoses.</p>
+          </div>
+          <div class="pt-profile-picker">
+            <label for="learnerProfileSelect">Learner Profile:</label>
+            <select id="learnerProfileSelect" class="form-select">
+              <option value="emma">Emma (Age 7, Early Reader)</option>
+              <option value="leo">Leo (Age 10, Grade 4)</option>
+              <option value="guest">Guest Learner</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="parent-portal-content">
+          <!-- Learner Snapshot Header -->
+          <div class="learner-summary-banner">
+            <div class="banner-avatar-large" id="ptBannerAvatar">🦉</div>
+            <div class="banner-text">
+              <h3 id="ptBannerName">Emma Wilson</h3>
+              <p id="ptBannerDetails"><strong>Current Focus:</strong> Early Phonics & Short Vowel Blending • <strong>Total Activity:</strong> 4.5 hours this month</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="printReportBtn">
+              <span>🖨️ Print / Save Report</span>
+            </button>
+          </div>
+
+          <div class="portal-cards-grid">
+            <!-- Strengths Card -->
+            <div class="portal-card">
+              <div class="portal-card-header bg-green-light">
+                <span class="pc-icon">🌟</span>
+                <h4>Strengths & Celebrations</h4>
+              </div>
+              <ul class="portal-list">
+                <li>Demonstrates strong confidence recognizing all 26 alphabet letters and basic sounds.</li>
+                <li>Consistently achieves high scores on <strong>Letter Sound Match</strong> mini-game.</li>
+                <li>Shows enthusiasm for sound blending activities with CVC words (cat, sun, pen).</li>
+              </ul>
+            </div>
+
+            <!-- Areas for Additional Practice -->
+            <div class="portal-card">
+              <div class="portal-card-header bg-yellow-light">
+                <span class="pc-icon">🌱</span>
+                <h4>Areas for Gentle Practice</h4>
+              </div>
+              <ul class="portal-list">
+                <li>Practicing the distinction between <strong>/sh/</strong> (ship) and <strong>/ch/</strong> (chair) digraphs.</li>
+                <li>Sentence word ordering: take extra time with longer 5-word sentence puzzles.</li>
+                <li>Encourage reading aloud with the slower audio playback mode (0.75x) for comfort.</li>
+              </ul>
+            </div>
+
+            <!-- Suggested Fun Offline Activities -->
+            <div class="portal-card">
+              <div class="portal-card-header bg-pink-light">
+                <span class="pc-icon">🎲</span>
+                <h4>Recommended Fun Activities at Home / School</h4>
+              </div>
+              <ul class="portal-list">
+                <li><strong>Sound Scavenger Hunt:</strong> Find 3 items around the house that start with the /s/ sound (spoon, sock, soap).</li>
+                <li><strong>Rhyme Time:</strong> What words rhyme with "cat"? (bat, mat, hat).</li>
+                <li><strong>Story Read-Along:</strong> Read together for 10 minutes using the LearnEase interactive karaoke reader.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="educational-disclaimer-box">
+            <span class="ed-icon">ℹ️</span>
+            <div>
+              <strong>Educational Support Disclaimer:</strong>
+              <p>LearnEase is designed as a learning companion to encourage reading practice, confidence, and study efficiency. It does not provide medical, psychological, or diagnostic evaluations for dyslexia or other conditions. For diagnostic concerns, consult certified educational specialists.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APP TAB 8: ACCESSIBILITY & DISPLAY SETTINGS -->
+      <section id="tab-accessibility" class="tab-pane">
+        <div class="pane-header">
+          <div>
+            <span class="section-pill bg-sky-light text-blue">Inclusive Design</span>
+            <h2 class="pane-title">Accessibility & Display Controls</h2>
+            <p class="pane-subtitle">Personalize your reading experience. All settings save automatically in your browser.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="resetAccessSettingsBtn">
+            <span>🔄 Reset to Default Settings</span>
+          </button>
+        </div>
+
+        <div class="access-controls-grid">
+          <!-- Control 1: Theme & Visual Contrast -->
+          <div class="access-card">
+            <h4>🎨 Color Theme</h4>
+            <p>Select a palette that is gentle on your eyes and offers comfortable contrast.</p>
+            <div class="theme-options-grid">
+              <button class="theme-btn active" data-set-theme="light">
+                <span class="theme-swatch light"></span>
+                <span>Light Pastel (Default)</span>
+              </button>
+              <button class="theme-btn" data-set-theme="cream">
+                <span class="theme-swatch cream"></span>
+                <span>Soft Warm Cream (Sepia)</span>
+              </button>
+              <button class="theme-btn" data-set-theme="dark">
+                <span class="theme-swatch dark"></span>
+                <span>High Contrast Dark</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Control 2: Text Size -->
+          <div class="access-card">
+            <h4>🔠 Text Size</h4>
+            <p>Adjust reading text size across all lessons, stories, and flashcards.</p>
+            <div class="btn-group-pill" id="fontSizeGroup">
+              <button class="pill-option" data-set-font-size="small">Small (14px)</button>
+              <button class="pill-option active" data-set-font-size="medium">Medium (16px)</button>
+              <button class="pill-option" data-set-font-size="large">Large (18px)</button>
+              <button class="pill-option" data-set-font-size="xlarge">Extra Large (20px)</button>
+            </div>
+          </div>
+
+          <!-- Control 3: Line Spacing -->
+          <div class="access-card">
+            <h4>📏 Line Spacing</h4>
+            <p>More space between lines prevents visual crowding and accidental line skipping.</p>
+            <div class="btn-group-pill" id="lineSpacingGroup">
+              <button class="pill-option active" data-set-line-spacing="normal">Normal (1.5)</button>
+              <button class="pill-option" data-set-line-spacing="relaxed">Relaxed (1.8)</button>
+              <button class="pill-option" data-set-line-spacing="loose">Loose (2.2)</button>
+            </div>
+          </div>
+
+          <!-- Control 4: Letter Spacing -->
+          <div class="access-card">
+            <h4>↔️ Letter Spacing</h4>
+            <p>Widening letter spacing can significantly improve readability for many learners.</p>
+            <div class="btn-group-pill" id="letterSpacingGroup">
+              <button class="pill-option active" data-set-letter-spacing="normal">Standard</button>
+              <button class="pill-option" data-set-letter-spacing="wide">Wide (+0.05em)</button>
+              <button class="pill-option" data-set-letter-spacing="xwide">Extra Wide (+0.1em)</button>
+            </div>
+          </div>
+
+          <!-- Control 5: Dyslexia-Friendly Font Choice -->
+          <div class="access-card">
+            <h4>🔤 Font Family</h4>
+            <p>Choose between clean modern, friendly rounded, or weighted dyslexia-friendly fonts.</p>
+            <div class="btn-group-pill" id="fontFamilyGroup">
+              <button class="pill-option active" data-set-font-family="nunito">Nunito (Friendly Rounded)</button>
+              <button class="pill-option" data-set-font-family="poppins">Poppins (Modern Clean)</button>
+              <button class="pill-option" data-set-font-family="lexend">Lexend (High Legibility)</button>
+            </div>
+          </div>
+
+          <!-- Control 6: Reading Ruler / Focus Bar -->
+          <div class="access-card">
+            <div class="toggle-row">
+              <div>
+                <h4>👁️ Reading Focus Ruler</h4>
+                <p>A translucent guide line follows your cursor or finger to keep your place.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleRulerCheckbox">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Control 7: Reduced Motion -->
+          <div class="access-card">
+            <div class="toggle-row">
+              <div>
+                <h4>🛑 Reduce Animations</h4>
+                <p>Disables floating animations and bouncy transitions for a calmer experience.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleReducedMotionCheckbox">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Control 8: Sound Effects Volume -->
+          <div class="access-card">
+            <div class="toggle-row">
+              <div>
+                <h4>🔊 Sound Effects & Audio Chimes</h4>
+                <p>Play cheerful chimes when answering correctly or interacting with cards.</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleSoundFxCheckbox" checked>
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Typography Preview Sandbox -->
+        <div class="access-preview-card">
+          <h4>📖 Live Reading Preview Sandbox</h4>
+          <p class="preview-text-sample">
+            "Every learner has their own unique superpower. When reading feels comfortable, words transform into wondrous stories that invite your imagination to soar across oceans and through galaxies."
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- 3. MODALS & SLIDE-OUT DRAWERS                             -->
+  <!-- ========================================================== -->
+
+  <!-- LOGIN / REGISTER / GUEST DEMO MODAL -->
+  <div id="authModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="authModalCloseBtn" aria-label="Close Modal">✕</button>
+      
+      <div class="modal-header text-center">
+        <div class="logo-icon-box-sm inline-block">
+          <svg viewBox="0 0 40 40" width="32" height="32" fill="none">
+            <rect width="40" height="40" rx="10" fill="#8B5CF6"/>
+            <path d="M12 28.5C14.5 27 17.5 27 20 28.5V13C17.5 11.5 14.5 11.5 12 13V28.5Z" fill="white" />
+            <path d="M28 28.5C25.5 27 22.5 27 20 28.5V13C22.5 11.5 25.5 11.5 28 13V28.5Z" fill="white" fill-opacity="0.9" />
+          </svg>
+        </div>
+        <h3 id="authModalTitle">Welcome to LearnEase</h3>
+        <p class="modal-subtitle">Fast demo authentication for competition showcase.</p>
+      </div>
+
+      <!-- Quick 1-Click Demo Profiles -->
+      <div class="demo-login-box">
+        <span class="demo-box-label">⚡ 1-Click Demo Accounts (Instant Access)</span>
+        <div class="demo-btn-row">
+          <button class="btn btn-pink btn-sm" id="demoLoginEmma">
+            <span>🦉 Emma (Student, Age 7)</span>
+          </button>
+          <button class="btn btn-purple btn-sm" id="demoLoginTeacher">
+            <span>👩‍🏫 Mrs. Wilson (Teacher)</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-divider"><span>or enter demo credentials</span></div>
+
+      <!-- Auth Tabs: Login vs Register -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLoginBtn">Sign In</button>
+        <button class="auth-tab" id="tabRegisterBtn">Create Account</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form" onsubmit="return false;">
+        <div class="form-group">
+          <label for="loginEmail">Email Address</label>
+          <input type="email" id="loginEmail" class="form-input" placeholder="learner@learnease.demo" value="emma@learnease.demo" required>
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="loginPassword" class="form-input" value="learnease123" required>
+            <button type="button" class="btn-toggle-pw" id="toggleLoginPwBtn" aria-label="Show or hide password">👁️</button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="submitLoginBtn">
+          <span>Sign In to Dashboard</span>
+        </button>
+      </form>
+
+      <!-- Register Form (Hidden by default) -->
+      <form id="registerForm" class="auth-form hidden" onsubmit="return false;">
+        <div class="form-group">
+          <label for="regName">Learner / Teacher Name</label>
+          <input type="text" id="regName" class="form-input" placeholder="e.g. Maya" required>
+        </div>
+        <div class="form-group">
+          <label for="regEmail">Email Address</label>
+          <input type="email" id="regEmail" class="form-input" placeholder="maya@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="regRole">Role</label>
+          <select id="regRole" class="form-select">
+            <option value="Learner">Student / Learner</option>
+            <option value="Parent">Parent</option>
+            <option value="Teacher">Teacher / Educator</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Pick an Avatar:</label>
+          <div class="avatar-selection-row" id="regAvatarPicker">
+            <button type="button" class="avatar-opt active" data-avatar="🦉">🦉</button>
+            <button type="button" class="avatar-opt" data-avatar="🦊">🦊</button>
+            <button type="button" class="avatar-opt" data-avatar="🐻">🐻</button>
+            <button type="button" class="avatar-opt" data-avatar="🐰">🐰</button>
+            <button type="button" class="avatar-opt" data-avatar="🤖">🤖</button>
+            <button type="button" class="avatar-opt" data-avatar="⭐">⭐</button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-pink btn-block" id="submitRegisterBtn">
+          <span>Create Free Account</span>
+        </button>
+      </form>
+
+      <p class="auth-disclaimer">
+        <em>Demo Notice: In this frontend prototype, session data is stored safely in localStorage. Ready for future backend integration.</em>
+      </p>
+    </div>
+  </div>
+
+  <!-- CREATE FLASHCARD MODAL -->
+  <div id="createCardModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="createCardTitle">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="createCardCloseBtn" aria-label="Close Modal">✕</button>
+      <div class="modal-header">
+        <h3 id="createCardTitle">Create a New Flashcard</h3>
+        <p class="modal-subtitle">Add custom terms or study notes to your personal flashcard deck.</p>
+      </div>
+      <form id="createCardForm" onsubmit="return false;">
+        <div class="form-group">
+          <label for="newCardDeck">Add to Deck</label>
+          <select id="newCardDeck" class="form-select">
+            <option value="custom">My Custom Cards</option>
+            <option value="sight-words">Sight Words</option>
+            <option value="science-nature">Science & Nature</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="newCardTerm">Front: Word / Term</label>
+          <input type="text" id="newCardTerm" class="form-input" placeholder="e.g. Metamorphosis" required>
+        </div>
+        <div class="form-group">
+          <label for="newCardMeaning">Back: Simple Definition</label>
+          <textarea id="newCardMeaning" class="form-input" rows="3" placeholder="e.g. The change in form that some animals go through, like a caterpillar turning into a butterfly." required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="newCardExample">Example Sentence (Optional)</label>
+          <input type="text" id="newCardExample" class="form-input" placeholder="e.g. Tadpoles undergo metamorphosis to become frogs.">
+        </div>
+        <div class="modal-actions-row">
+          <button type="button" class="btn btn-secondary" id="cancelCreateCardBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveNewCardBtn">Save Card to Deck</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SLIDE-OUT ACCESSIBILITY QUICK DRAWER -->
+  <aside id="accessibilityDrawer" class="access-drawer hidden" aria-label="Accessibility Drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-box">
+        <span class="drawer-icon">⚙️</span>
+        <h3>Quick Display Settings</h3>
+      </div>
+      <button id="closeDrawerBtn" class="drawer-close-btn" aria-label="Close Drawer">✕</button>
+    </div>
+    <div class="drawer-body">
+      <!-- Quick Theme Switch -->
+      <div class="drawer-section">
+        <label class="drawer-label">Theme:</label>
+        <div class="quick-theme-row">
+          <button class="quick-theme-chip active" data-set-theme="light">Light</button>
+          <button class="quick-theme-chip" data-set-theme="cream">Cream</button>
+          <button class="quick-theme-chip" data-set-theme="dark">Dark</button>
+        </div>
+      </div>
+
+      <!-- Quick Font Size -->
+      <div class="drawer-section">
+        <label class="drawer-label">Text Size:</label>
+        <div class="quick-size-row">
+          <button class="quick-size-btn" data-set-font-size="small">A-</button>
+          <button class="quick-size-btn active" data-set-font-size="medium">Default</button>
+          <button class="quick-size-btn" data-set-font-size="large">A+</button>
+          <button class="quick-size-btn" data-set-font-size="xlarge">A++</button>
+        </div>
+      </div>
+
+      <!-- Quick Focus Ruler -->
+      <div class="drawer-section">
+        <div class="toggle-row">
+          <span>Reading Focus Ruler</span>
+          <label class="switch">
+            <input type="checkbox" id="drawerRulerToggle">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Full Settings Link -->
+      <div class="drawer-footer">
+        <button class="btn btn-secondary btn-block" id="drawerOpenFullAccessBtn">
+          <span>Open Full Accessibility Panel →</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Core JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
